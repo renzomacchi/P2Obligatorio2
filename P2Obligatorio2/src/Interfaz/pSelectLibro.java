@@ -4,12 +4,9 @@
 */
 package Interfaz;
 
-public class PanelSelectLibro extends javax.swing.JPanel {
+public class pSelectLibro extends javax.swing.JPanel {
 
-    /**
-     * Creates new form PanelSelectLibro
-     */
-    public PanelSelectLibro() {
+    public pSelectLibro() {
         initComponents();
     }
 
