@@ -4,11 +4,11 @@
 */
 package Dominio;
 
-class Editorial {
+public class Editorial {
     private String nombre;
     private String pais;
     
-    Editorial(String nombre, String pais) {
+    public Editorial(String nombre, String pais) {
         this.setNombre(nombre);
         this.setPais(pais);
     }

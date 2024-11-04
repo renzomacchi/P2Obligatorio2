@@ -10,7 +10,6 @@ public class vVentaLibros extends javax.swing.JFrame {
 
     public vVentaLibros() {
         initComponents();
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -53,7 +52,7 @@ public class vVentaLibros extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Venta de Libros");
 
         jLabel1.setText("Factura:");

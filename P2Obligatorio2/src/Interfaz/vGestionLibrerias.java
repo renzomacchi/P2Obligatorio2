@@ -4,9 +4,17 @@
 */
 package Interfaz;
 
-public class vGestionLibrerias extends javax.swing.JFrame {
+import Dominio.Sistema;
 
+public class vGestionLibrerias extends javax.swing.JFrame {
+    private Sistema modelo;
+    
     public vGestionLibrerias() {
+        initComponents();
+    }
+    
+    public vGestionLibrerias(Sistema modelo) {
+        this.modelo = modelo;
         initComponents();
     }
 
@@ -144,11 +152,15 @@ public class vGestionLibrerias extends javax.swing.JFrame {
 
     private void btnRegistrarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarEditorialActionPerformed
         //Abrir Ventana para Registrar una Editorial
+        vRegistroEditorial re = new vRegistroEditorial(this.modelo);
+        re.setVisible(true);
         
     }//GEN-LAST:event_btnRegistrarEditorialActionPerformed
 
     private void btnRegistrarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarGeneroActionPerformed
         //Abrir Ventana para Registrar un Genero
+        vRegistroGenero rg = new vRegistroGenero(this.modelo);
+        rg.setVisible(true);
     }//GEN-LAST:event_btnRegistrarGeneroActionPerformed
 
     private void btnConsultaVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaVentasActionPerformed

@@ -4,10 +4,15 @@
 */
 package Dominio;
 
-class Genero {
+public class Genero {
     private String nombre;
     private String desc;
 
+    public Genero(String nombre, String desc) {
+        this.setNombre(nombre);
+        this.setDesc(desc);
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -22,6 +27,11 @@ class Genero {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+    
+    @Override
+    public String toString() {
+        return this.nombre + " - " + this.desc;
     }
     
 }
