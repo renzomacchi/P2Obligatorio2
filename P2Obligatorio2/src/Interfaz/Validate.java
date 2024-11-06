@@ -1,5 +1,5 @@
 /*
-    Renzo Macchi
+    Renzo Macchi Gay
     Santiago Claveré
 */
 package Interfaz;
