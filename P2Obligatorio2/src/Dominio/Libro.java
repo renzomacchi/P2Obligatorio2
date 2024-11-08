@@ -4,6 +4,8 @@
 */
 package Dominio;
 
+import java.io.File;
+
 class Libro {
     private Editorial editorial;
     private Genero genero;
@@ -11,5 +13,6 @@ class Libro {
     private String isbn;
     private String titulo;
     private int pCosto;
-    private int pVenta;    
+    private int pVenta;
+    private File imagen;
 }

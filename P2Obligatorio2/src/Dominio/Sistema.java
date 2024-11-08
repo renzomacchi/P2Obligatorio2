@@ -7,113 +7,202 @@ package Dominio;
 import java.util.*;
 
 public class Sistema extends java.util.Observable {
-    private HashMap<String,String> HMEditoriales;
-    private HashMap<String,String> HMGeneros;
-    private ArrayList<Autor> lAutores;
-    private ArrayList<Libro> lLibros;
-    private ArrayList<Venta> lVentas;
+    private ArrayList<Editorial> LEditoriales;
+    private ArrayList<Genero> LGeneros;
+    private ArrayList<Autor> LAutores;
+    private ArrayList<Libro> LLibros;
+    private ArrayList<Venta> LVentas;
+    private ArrayList<Genero> LGenerosSeleccionados;
 
     public Sistema() {
-        this.HMEditoriales = new HashMap<String,String>();
-        this.HMGeneros = new HashMap<String,String>();
-        this.lAutores = new ArrayList<Autor>();
-        this.lLibros = new ArrayList<Libro>();
-        this.lVentas = new ArrayList<Venta>();
+        this.LEditoriales = new ArrayList<>();
+        this.LGeneros = new ArrayList<>();
+        this.LAutores = new ArrayList<>();
+        this.LLibros = new ArrayList<>();
+        this.LVentas = new ArrayList<>();
         this.cargarDatos();
     }
 
-    public HashMap<String,String> getHMEditoriales() {
-        return HMEditoriales;
-    }
-    
-    /**
-     * Devuelve un array list conteniendo todos los objetos editoriales
-     * @return 
-    */
-    public ArrayList<Editorial> getArrayEditoriales() {
-        ArrayList<Editorial> lEditorial = new ArrayList<Editorial>();
-        Iterator<String> it = this.getHMEditoriales().keySet().iterator();
-        while (it.hasNext()) {
-            String nombre = it.next();
-            String pais = this.getHMEditoriales().get(nombre);
-            lEditorial.add(new Editorial(nombre,pais));
-        }
-        return lEditorial;
+    //  TODO SOBRE EDITORIALES
+    //--------------------------------------------------------------------------
+    public ArrayList<Editorial> getLEditoriales() {
+        return this.LEditoriales;
     }
 
+    /**
+     * Agrega una Editorial a this.LEditoriales
+     * @param editorial 
+     */
     public void addEditorial(Editorial editorial) {
-        this.HMEditoriales.put(editorial.getNombre(), editorial.getPais());
+        this.getLEditoriales().add(editorial);
         setChanged();
         notifyObservers();
     }
     
+    /**
+     * Busca una Editorial en this.LEditoriales
+     * @param editorial
+     * @return True si existe, False si no existe
+     */
+    public boolean existeEditorial(Editorial editorial) {
+        return this.getLEditoriales().contains(editorial);
+    }
+    
+    /**
+     * Busca una Editorial que tenga a {@code nombre} como nombre
+     * @param nombre El String es case sensitive
+     * @return Devuelve una Editorial, si no encuentra devuelve una Editorial nula
+     */
     public Editorial getEditorial(String nombre) {
-        return new Editorial(nombre,this.HMEditoriales.get(nombre));
+        Editorial busco = new Editorial(nombre,"");
+        int index = this.getLEditoriales().indexOf(busco);
+        if (index == -1) {
+            busco = new Editorial(null,null);
+        } else {
+            busco = this.getLEditoriales().get(index);
+        }
+        return busco;
     }
 
-    public HashMap<String,String> getHMGeneros() {
-        return HMGeneros;
+    //  TODO SOBRE GENEROS
+    //--------------------------------------------------------------------------
+    public ArrayList<Genero> getLGeneros() {
+        return LGeneros;
     }
+    
+    /**
+     * Agrega un Genero a this.LGeneros
+     * @param genero 
+     */
+    public void addGenero(Genero genero) {
+        this.getLGeneros().add(genero);
+        setChanged();
+        notifyObservers();
+    }
+    
+    /**
+     * Busca un Genero en this.LGeneros
+     * @param genero
+     * @return True si existe, False si no existe
+     */
+    public boolean existeGenero(Genero genero) {
+        return this.getLGeneros().contains(genero);
+    }
+    
+    /**
+     * Busca un Genero que tenga a {@code nombre} como nombre
+     * @param nombre El String es case sensitive
+     * @return Devuelve un Genero, si no encuentra devuelve un Genero nulo
+     */
+    public Genero getGenero(String nombre) {
+        Genero busco = new Genero(nombre,"");
+        int index = this.getLGeneros().indexOf(busco);
+        if (index == -1) {
+            busco = new Genero(null,null);
+        } else {
+            busco = this.getLGeneros().get(index);
+        }
+        return busco;
+    }
+    
     /**
      * Devuelve un array de Strings conteniendo todos los Generos.toString()
-     * Por ejemplo {"Accion - mucha accion", "Horror - que miedo"}
-     * @return 
-    */
-    public String[] getStrArrayGeneros() {
-        String[] aGenero = new String[this.getHMGeneros().size()];
-        Iterator<String> it = this.getHMGeneros().keySet().iterator();
+     * @return
+     */
+    public String[] getLStringGeneros() {
+        String[] LStrGeneros = new String[this.getLGeneros().size()];
+        Iterator<Genero> it = this.getLGeneros().iterator();
         int i = 0;
         while (it.hasNext()) {
-            String nombre = it.next();
-            String desc = this.getHMGeneros().get(nombre);
-            aGenero[i] = new Genero(nombre, desc).toString();
+            LStrGeneros[i] = it.next().toString();
             i++;
         }
-        return aGenero;
+        return LStrGeneros;
     }
 
-    public void addGenero(Genero genero) {
-        this.HMGeneros.put(genero.getNombre(), genero.getDesc());
-        setChanged();
-        notifyObservers();
+    //  TODO SOBRE AUTORES
+    //--------------------------------------------------------------------------
+    public ArrayList<Autor> getLAutores() {
+        return LAutores;
     }
-
-    public ArrayList<Autor> getlAutores() {
-        return lAutores;
-    }
+    
 
     public void addAutor(Autor autor) {
-        this.lAutores.add(autor);
+        this.LAutores.add(autor);
     }
-
-    public ArrayList<Libro> getlLibros() {
-        return lLibros;
+    
+    /**
+     * Busca un Genero en this.LGeneros
+     * @param autor
+     * @return True si existe, False si no existe
+     */
+    public boolean existeAutor(Autor autor){
+        return this.getLAutores().contains(autor);  
+    }
+    
+    /**
+     * Devuelve un array de Strings conteniendo todos los Generos.toString()
+     * @return
+     */
+    public String[] getLStringAutores() {
+        String[] LStrAutores = new String[this.getLAutores().size()];
+        Iterator<Autor> it = this.getLAutores().iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            LStrAutores[i] = it.next().toString();
+            i++;
+        }
+        return LStrAutores;
+    }
+    
+    //  TODO SOBRE LIBROS
+    //--------------------------------------------------------------------------
+    public ArrayList<Libro> getLLibros() {
+        return LLibros;
     }
 
     public void addLibro(Libro libro) {
-        this.lLibros.add(libro);
+        this.LLibros.add(libro);
     }
 
+    //  TODO SOBRE VENTAS
+    //--------------------------------------------------------------------------
     public ArrayList<Venta> getlVentas() {
-        return lVentas;
+        return LVentas;
     }
 
     public void addVenta(Venta venta) {
-        this.lVentas.add(venta);
+        this.LVentas.add(venta);
     }
+    
+    //  TODO SOBRE GENEROS SELECCIONADOS
+    //--------------------------------------------------------------------------
+    public ArrayList<Genero> getlGenerosSeleccionados() {
+        return this.LGenerosSeleccionados;
+    }
+    
+    public void addGeneroSeleccionado(String nomGenero) {
+        this.getlGenerosSeleccionados().add(this.getGenero(nomGenero));
+    }
+    
+    public ArrayList<Genero> getGenerosNoSeleccionados() {
+        return new ArrayList<Genero>();
+    }
+    
+    //  BORRAR LO DE ABAJO ANTES DE ENTREGAR
+    //--------------------------------------------------------------------------
+    
+    //1. Todas las ventanas de registrar autores tienen linkeadas
+    //      la seleccion de generos
     
     private void cargarDatos() {
         //BORRAR esta funcion antes de entregar
-        this.HMEditoriales.put("e1","Uy");
-        this.HMEditoriales.put("e2","ar");
-        this.HMEditoriales.put("e3","mex");
-        this.HMEditoriales.put("e4","us");
+        this.LEditoriales.add(new Editorial("e1","Uy"));
+        this.LEditoriales.add(new Editorial("e2","ar"));
+        this.LEditoriales.add(new Editorial("e3","mex"));
+        this.LEditoriales.add(new Editorial("e4","us"));
+        this.LGeneros.add(new Genero("g","salsa"));
     }
-    
-    
-    
-    
-    
 }
 
 

@@ -5,14 +5,11 @@
 package Interfaz;
 
 import Dominio.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Observable;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class vRegistroEditorial extends javax.swing.JFrame implements java.util.Observer {
+    public class vRegistroEditorial extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;
     
     public vRegistroEditorial() {
@@ -20,9 +17,9 @@ public class vRegistroEditorial extends javax.swing.JFrame implements java.util.
     }
     
     public vRegistroEditorial(Sistema modelo) {
+        initComponents();
         this.modelo = modelo;
         this.modelo.addObserver(this);
-        initComponents();
         objetoAPantalla();
     }
     
@@ -32,7 +29,7 @@ public class vRegistroEditorial extends javax.swing.JFrame implements java.util.
         //Limpiamos tabla
         tblModel.setRowCount(0);
         //Agregamos todos los datos a la tabla
-        for(Editorial e : this.modelo.getArrayEditoriales()) {
+        for(Editorial e : this.modelo.getLEditoriales()) {
             String[] fila = {e.getNombre(), e.getPais()};
             tblModel.addRow(fila);
         }
@@ -83,9 +80,16 @@ public class vRegistroEditorial extends javax.swing.JFrame implements java.util.
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane2.setViewportView(tableEditoriales);
@@ -123,7 +127,7 @@ public class vRegistroEditorial extends javax.swing.JFrame implements java.util.
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -137,11 +141,16 @@ public class vRegistroEditorial extends javax.swing.JFrame implements java.util.
         String nombre = this.txtNombre.getText();
         String pais = this.txtPais.getText();
         if(Validate.esTxtVacio(nombre) || Validate.esTxtVacio(pais)) {
-            JOptionPane.showMessageDialog(null, Validate.TXT_VACIO);
+            Validate.mensaje(Validate.TXT_VACIO);
         } else {
-            modelo.addEditorial(new Editorial(nombre,pais));
-            this.txtNombre.setText("");
-            this.txtPais.setText("");
+            Editorial miEditorial = new Editorial(nombre, pais);
+            if(modelo.existeEditorial(miEditorial)) {
+                Validate.mensaje(Validate.EDITORIAL_REPETIDO);
+            } else {
+                modelo.addEditorial(miEditorial);
+                this.txtNombre.setText("");
+                this.txtPais.setText("");
+            }
         }
     }                                            
 

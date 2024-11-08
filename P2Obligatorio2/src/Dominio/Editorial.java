@@ -29,4 +29,9 @@ public class Editorial {
         this.pais = pais;
     }
     
+    @Override
+    public boolean equals(Object o) {
+        Editorial e = (Editorial)o;
+        return this.getNombre().equals(e.getNombre());
+    }
 }

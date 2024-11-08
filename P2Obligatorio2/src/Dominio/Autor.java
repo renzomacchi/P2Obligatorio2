@@ -4,11 +4,18 @@
 */
 package Dominio;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
-class Autor {
+public class Autor {
     private String nombre;
-    private HashMap<String, String> HMGeneros;
+    private String nacionalidad;
+    private ArrayList<Genero> generos;
+    
+    public Autor(String nom, String nac, ArrayList<Genero> generos) {
+        this.nombre = nom;
+        this.nacionalidad = nac;
+        this.generos = generos;
+    }
 
     public String getNombre() {
         return nombre;
@@ -17,12 +24,31 @@ class Autor {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    public HashMap<String,String> getHMGeneros() {
-        return HMGeneros;
+
+    public String getNacionalidad() {
+        return nacionalidad;
     }
 
-    public void addGenero(Genero genero) {
-        this.HMGeneros.put(genero.getNombre(), genero.getDesc());
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public ArrayList<Genero> getGeneros() {
+        return generos;
+    }
+
+    public void addGeneros(Genero genero) {
+        this.generos.add(genero);
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        Autor a = (Autor)o;
+        return (this.getNombre().equals(a.getNombre()));
+    }
+    
+    @Override
+    public String toString() {
+        return this.getNombre() + " - " + this.getNacionalidad();
     }
 }

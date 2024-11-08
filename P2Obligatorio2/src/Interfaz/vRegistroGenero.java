@@ -19,18 +19,16 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
     }
     
     public vRegistroGenero(Sistema modelo) {
+        initComponents();
         this.modelo = modelo;
         this.modelo.addObserver(this);
-        initComponents();
         objetoAPantalla();
     }
     
     private void objetoAPantalla() {
         //Obtenemos la lista
-        
-        //Limpiamos tabla
-        //Agregamos todos los datos a la tabla
-        this.listGeneros.setListData(this.modelo.getStrArrayGeneros());
+        this.listGeneros.setListData(this.modelo.getLStringGeneros());
+        this.listGeneros.setListData(this.modelo.getLStringGeneros());
     }
 
     /**
@@ -72,6 +70,8 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listGeneros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listGeneros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(listGeneros);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -91,8 +91,8 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
                                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(txtDesc))
+                                    .addComponent(txtDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(txtNombre))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnRegistrar)))
                         .addContainerGap())))
@@ -106,9 +106,9 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
                     .addComponent(txtNombre)
                     .addComponent(btnRegistrar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -123,11 +123,16 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
         String nombre = this.txtNombre.getText();
         String desc = this.txtDesc.getText();
         if(Validate.esTxtVacio(nombre) || Validate.esTxtVacio(desc)) {
-            JOptionPane.showMessageDialog(null, Validate.TXT_VACIO);
+            Validate.mensaje(Validate.TXT_VACIO);
         } else {
-            modelo.addGenero(new Genero(nombre,desc));
-            this.txtNombre.setText("");
-            this.txtDesc.setText("");
+            Genero miGenero = new Genero(nombre, desc);
+            if(modelo.existeGenero(miGenero)) {
+                Validate.mensaje(Validate.GENERO_REPETIDO);
+            } else {
+                modelo.addGenero(miGenero);
+                this.txtNombre.setText("");
+                this.txtDesc.setText("");
+            }
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

@@ -4,14 +4,22 @@
 */
 package Interfaz;
 
+import javax.swing.JOptionPane;
+
 /**
  * Una clase que hace checks de validacion a
  * diferentes componentes que requieren inputs del usuario
  * Tambien contiene mensajes de feedback en variables estaticas.
  */
 public abstract class Validate {
-
+    //Mensajes de error por mal input del usuario
     public final static String TXT_VACIO = "Debe llenar el formulario";
+    public final static String EDITORIAL_REPETIDO = "Ya se ha ingresado una Editorial con ese nombre";
+    public final static String GENERO_REPETIDO = "Ya se ha ingresado un Genero con ese nombre";
+    
+    public static void mensaje(String mensaje) {
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
     
     /**
      * Dado un array de string, checkea que cada string no este vacio.

@@ -184,7 +184,8 @@ public class vGestionLibrerias extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultaLibrosActionPerformed
 
     private void btnRegistrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAutorActionPerformed
-        // TODO add your handling code here:
+        vRegistroAutor ra1 = new vRegistroAutor(modelo);
+        ra1.setVisible(true);
     }//GEN-LAST:event_btnRegistrarAutorActionPerformed
 
     /**

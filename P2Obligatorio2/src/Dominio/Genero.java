@@ -34,4 +34,10 @@ public class Genero {
         return this.nombre + " - " + this.desc;
     }
     
+    @Override
+    public boolean equals(Object o) {
+        Genero g = (Genero)o;
+        return this.getNombre().equals(g.getNombre());
+    }
+    
 }
