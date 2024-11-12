@@ -20,6 +20,7 @@ public class Sistema extends java.util.Observable {
         this.LAutores = new ArrayList<>();
         this.LLibros = new ArrayList<>();
         this.LVentas = new ArrayList<>();
+        this.LGenerosSeleccionados = new ArrayList<>();
         this.cargarDatos();
     }
 
@@ -105,20 +106,6 @@ public class Sistema extends java.util.Observable {
         return busco;
     }
     
-    /**
-     * Devuelve un array de Strings conteniendo todos los Generos.toString()
-     * @return
-     */
-    public String[] getLStringGeneros() {
-        String[] LStrGeneros = new String[this.getLGeneros().size()];
-        Iterator<Genero> it = this.getLGeneros().iterator();
-        int i = 0;
-        while (it.hasNext()) {
-            LStrGeneros[i] = it.next().toString();
-            i++;
-        }
-        return LStrGeneros;
-    }
 
     //  TODO SOBRE AUTORES
     //--------------------------------------------------------------------------
@@ -129,6 +116,8 @@ public class Sistema extends java.util.Observable {
 
     public void addAutor(Autor autor) {
         this.LAutores.add(autor);
+        setChanged();
+        notifyObservers();
     }
     
     /**
@@ -138,21 +127,6 @@ public class Sistema extends java.util.Observable {
      */
     public boolean existeAutor(Autor autor){
         return this.getLAutores().contains(autor);  
-    }
-    
-    /**
-     * Devuelve un array de Strings conteniendo todos los Generos.toString()
-     * @return
-     */
-    public String[] getLStringAutores() {
-        String[] LStrAutores = new String[this.getLAutores().size()];
-        Iterator<Autor> it = this.getLAutores().iterator();
-        int i = 0;
-        while (it.hasNext()) {
-            LStrAutores[i] = it.next().toString();
-            i++;
-        }
-        return LStrAutores;
     }
     
     //  TODO SOBRE LIBROS
@@ -177,31 +151,85 @@ public class Sistema extends java.util.Observable {
     
     //  TODO SOBRE GENEROS SELECCIONADOS
     //--------------------------------------------------------------------------
-    public ArrayList<Genero> getlGenerosSeleccionados() {
+    public ArrayList<Genero> getLGenerosSeleccionados() {
         return this.LGenerosSeleccionados;
     }
     
     public void addGeneroSeleccionado(String nomGenero) {
-        this.getlGenerosSeleccionados().add(this.getGenero(nomGenero));
+        this.getLGenerosSeleccionados().add(this.getGenero(nomGenero));
+        setChanged();
+        notifyObservers();
     }
     
-    public ArrayList<Genero> getGenerosNoSeleccionados() {
-        return new ArrayList<Genero>();
+    public void eliminarGeneroSeleccionado(String nomGenero) {
+        this.getLGenerosSeleccionados().remove(this.getGenero(nomGenero));
+        setChanged();
+        notifyObservers();
     }
+    
+    /**
+     * Hace la resta del conjunto de generos y el conjunto de generos seleccionados
+     * @return LGeneros - LGenerosSeleccionados
+     * Puede ser vacio
+     */
+    public ArrayList<Genero> getLGenerosNoSeleccionados() {
+        ArrayList<Genero> noSeleccion = new ArrayList<Genero>();
+        Iterator<Genero> it = this.getLGeneros().iterator();
+        try {
+            while (it.hasNext()) {
+            Genero g = it.next();
+            if (!this.getLGenerosSeleccionados().contains(g)) {
+                noSeleccion.add(g);
+                }
+            }
+        } catch (NullPointerException e) {
+            //Si no se ha seleccionado nada entonces devuelve todo.
+            noSeleccion = this.getLGeneros();
+        }
+        
+        return noSeleccion;
+    }
+    
+    public void resetLGenerosSeleccionados() {
+        this.LGenerosSeleccionados = new ArrayList<Genero>();
+    }
+    
+    //  UTILIDAD
+    //--------------------------------------------------------------------------
+    /**
+     * Devuelve un ArrayList de Strings conteniendo todos los Objetos.toString()
+     * @param array
+     * @return
+     * String[array.size()] conteniendo todos los objectos del array en forma de String
+     */
+    public static String[] toStringArray(ArrayList<?> array) {
+        String[] stringificar = new String[array.size()];
+        Iterator<?> it = array.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            stringificar[i] = it.next().toString();
+            i++;
+        }
+        return stringificar;
+    }
+    
     
     //  BORRAR LO DE ABAJO ANTES DE ENTREGAR
     //--------------------------------------------------------------------------
     
     //1. Todas las ventanas de registrar autores tienen linkeadas
-    //      la seleccion de generos
+    //   la seleccion de generos
+    //2. Se pueden seleccionar generos iguales en registro de autores
     
     private void cargarDatos() {
         //BORRAR esta funcion antes de entregar
-        this.LEditoriales.add(new Editorial("e1","Uy"));
-        this.LEditoriales.add(new Editorial("e2","ar"));
-        this.LEditoriales.add(new Editorial("e3","mex"));
-        this.LEditoriales.add(new Editorial("e4","us"));
-        this.LGeneros.add(new Genero("g","salsa"));
+        this.LEditoriales.add(new Editorial("e1","Uruguay"));
+        this.LEditoriales.add(new Editorial("e2","Argentina"));
+        this.LEditoriales.add(new Editorial("e3","Mexico"));
+        this.LEditoriales.add(new Editorial("e4","USA"));
+        this.LGeneros.add(new Genero("Accion","mucha accion :O"));
+        this.LGeneros.add(new Genero("Terror","santiago es gay"));
+        this.LGeneros.add(new Genero("Aventura","wabiwabo"));
     }
 }
 

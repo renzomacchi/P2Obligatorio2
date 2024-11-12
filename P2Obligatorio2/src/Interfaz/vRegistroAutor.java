@@ -24,9 +24,9 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
     
     private void objetoAPantalla() {
         //Obtenemos la lista
-        this.listaGeneros.setListData(this.modelo.getLStringGeneros());
-        this.listaGenerosSeleccionados.setListData(this.modelo.getLStringGeneros());
-        this.listaAutores.setListData(this.modelo.getLStringAutores());
+        this.listaGeneros.setListData(Sistema.toStringArray(this.modelo.getLGenerosNoSeleccionados()));
+        this.listaGenerosSeleccionados.setListData(Sistema.toStringArray(this.modelo.getLGenerosSeleccionados()));
+        this.listaAutores.setListData(Sistema.toStringArray(this.modelo.getLAutores()));
     }
 
     /**
@@ -66,11 +66,6 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
             }
         });
 
-        listaGeneros.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         listaGeneros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(listaGeneros);
 
@@ -78,11 +73,6 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
 
         jLabel2.setText("Nacionalidad");
 
-        listaGenerosSeleccionados.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         listaGenerosSeleccionados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(listaGenerosSeleccionados);
 
@@ -90,11 +80,6 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
 
         jLabel4.setText("Generos seleccionados:");
 
-        listaAutores.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane3.setViewportView(listaAutores);
 
         jLabel5.setText("Autores Existentes");
@@ -107,6 +92,11 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
         });
 
         btnDeseleccionarGenero.setText("<-");
+        btnDeseleccionarGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeseleccionarGeneroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,32 +125,31 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane3)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombre)
-                                    .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnRegistrar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2))))
-                        .addComponent(jLabel5)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtNombre)
+                                .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnRegistrar))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                            .addGap(18, 18, 18)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,13 +188,41 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
         if(Validate.esTxtVacio(nombre) || Validate.esTxtVacio(nacion)) {
             Validate.mensaje(Validate.TXT_VACIO);
         } else {
-            Validate.mensaje("VALIDO!");
+            if (this.modelo.getLGenerosSeleccionados().isEmpty()) {
+                Validate.mensaje(Validate.GENERO_SELECCION_VACIA);
+            } else {
+                Autor miAutor = new Autor(nombre,nacion,this.modelo.getLGenerosSeleccionados());
+                if(this.modelo.existeAutor(miAutor)) {
+                    Validate.mensaje(Validate.AUTOR_REPETIDO);
+                } else {
+                    this.modelo.resetLGenerosSeleccionados();
+                    this.txtNombre.setText("");
+                    this.txtNacionalidad.setText("");
+                    this.modelo.addAutor(miAutor);
+                }
+            }
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnSeleccionarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarGeneroActionPerformed
-        //this.modelo.
+        //Pasa el Genero seleccionado de la lista de Generos a la lista de Generos Seleccionados
+        int index = this.listaGeneros.getSelectedIndex();
+        if(index == -1) {
+            Validate.mensaje(Validate.GENERO_NO_SELECCIONADO);
+        } else {
+            this.modelo.addGeneroSeleccionado(this.modelo.getLGeneros().get(index).getNombre());
+        }
     }//GEN-LAST:event_btnSeleccionarGeneroActionPerformed
+
+    private void btnDeseleccionarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeseleccionarGeneroActionPerformed
+        //Pasa el Genero seleccionado de la lista de Generos Seleccionados a la lista de Generos
+        int index = this.listaGenerosSeleccionados.getSelectedIndex();
+        if(index == -1) {
+            Validate.mensaje(Validate.GENERO_NO_SELECCIONADO);
+        } else {
+            this.modelo.eliminarGeneroSeleccionado(this.modelo.getLGeneros().get(index).getNombre());
+        }
+    }//GEN-LAST:event_btnDeseleccionarGeneroActionPerformed
 
     /**
      * @param args the command line arguments

@@ -27,8 +27,7 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
     
     private void objetoAPantalla() {
         //Obtenemos la lista
-        this.listGeneros.setListData(this.modelo.getLStringGeneros());
-        this.listGeneros.setListData(this.modelo.getLStringGeneros());
+        this.listGeneros.setListData(Sistema.toStringArray(this.modelo.getLGeneros()));
     }
 
     /**

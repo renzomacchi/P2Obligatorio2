@@ -16,6 +16,9 @@ public abstract class Validate {
     public final static String TXT_VACIO = "Debe llenar el formulario";
     public final static String EDITORIAL_REPETIDO = "Ya se ha ingresado una Editorial con ese nombre";
     public final static String GENERO_REPETIDO = "Ya se ha ingresado un Genero con ese nombre";
+    public final static String GENERO_SELECCION_VACIA = "Seleccione al menos un Genero";
+    public final static String GENERO_NO_SELECCIONADO = "Seleccione un Genero";
+    public final static String AUTOR_REPETIDO = "Ya se ha ingresado un Autor con ese nombre";
     
     public static void mensaje(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje);
