@@ -5,8 +5,12 @@
 package Interfaz;
 import Dominio.*;
 import java.util.Observable;
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JOptionPane;
 public class vRegistroAutor extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;
+    private Autor registro;
     
     /**
      * Creates new form vRegistroAutor
@@ -23,9 +27,16 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
     }
     
     private void objetoAPantalla() {
-        //Obtenemos la lista
-        this.listaGeneros.setListData(Sistema.toStringArray(this.modelo.getLGenerosNoSeleccionados()));
-        this.listaGenerosSeleccionados.setListData(Sistema.toStringArray(this.modelo.getLGenerosSeleccionados()));
+        //Actualizamos la lista de generos
+        DefaultListModel gens = new DefaultListModel();
+        gens.addAll(this.modelo.getLGenerosNoSeleccionados());
+        this.listaGeneros.setModel(gens);
+        
+        //Actualizamos la lista de generos seleccionados
+        DefaultListModel gensSelec = new DefaultListModel();
+        gensSelec.addAll(this.modelo.getLGenerosSeleccionados());
+        this.listaGenerosSeleccionados.setModel(gensSelec);
+        
         this.listaAutores.setListData(Sistema.toStringArray(this.modelo.getLAutores()));
     }
 
@@ -38,6 +49,8 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         txtNombre = new javax.swing.JTextField();
         txtNacionalidad = new javax.swing.JTextField();
         btnRegistrar = new javax.swing.JButton();
@@ -55,6 +68,19 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
         jPanel1 = new javax.swing.JPanel();
         btnSeleccionarGenero = new javax.swing.JButton();
         btnDeseleccionarGenero = new javax.swing.JButton();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Autor");
@@ -206,21 +232,21 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
 
     private void btnSeleccionarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarGeneroActionPerformed
         //Pasa el Genero seleccionado de la lista de Generos a la lista de Generos Seleccionados
-        int index = this.listaGeneros.getSelectedIndex();
-        if(index == -1) {
+        Genero genSelec = this.listaGeneros.getSelectedValue();
+        if(genSelec == null) {
             Validate.mensaje(Validate.GENERO_NO_SELECCIONADO);
         } else {
-            this.modelo.addGeneroSeleccionado(this.modelo.getLGeneros().get(index).getNombre());
+            this.modelo.addGeneroSeleccionado(genSelec);
         }
     }//GEN-LAST:event_btnSeleccionarGeneroActionPerformed
 
     private void btnDeseleccionarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeseleccionarGeneroActionPerformed
         //Pasa el Genero seleccionado de la lista de Generos Seleccionados a la lista de Generos
-        int index = this.listaGenerosSeleccionados.getSelectedIndex();
-        if(index == -1) {
+        Genero genSelec = this.listaGenerosSeleccionados.getSelectedValue();
+        if(genSelec == null) {
             Validate.mensaje(Validate.GENERO_NO_SELECCIONADO);
         } else {
-            this.modelo.eliminarGeneroSeleccionado(this.modelo.getLGeneros().get(index).getNombre());
+            this.modelo.eliminarGeneroSeleccionado(genSelec);
         }
     }//GEN-LAST:event_btnDeseleccionarGeneroActionPerformed
 
@@ -272,9 +298,11 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
     private javax.swing.JList<String> listaAutores;
-    private javax.swing.JList<String> listaGeneros;
-    private javax.swing.JList<String> listaGenerosSeleccionados;
+    private javax.swing.JList<Genero> listaGeneros;
+    private javax.swing.JList<Genero> listaGenerosSeleccionados;
     private javax.swing.JTextField txtNacionalidad;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables

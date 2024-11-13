@@ -155,14 +155,14 @@ public class Sistema extends java.util.Observable {
         return this.LGenerosSeleccionados;
     }
     
-    public void addGeneroSeleccionado(String nomGenero) {
-        this.getLGenerosSeleccionados().add(this.getGenero(nomGenero));
+    public void addGeneroSeleccionado(Genero gen) {
+        this.getLGenerosSeleccionados().add(gen);
         setChanged();
         notifyObservers();
     }
     
-    public void eliminarGeneroSeleccionado(String nomGenero) {
-        this.getLGenerosSeleccionados().remove(this.getGenero(nomGenero));
+    public void eliminarGeneroSeleccionado(Genero gen) {
+        this.getLGenerosSeleccionados().remove(gen);
         setChanged();
         notifyObservers();
     }

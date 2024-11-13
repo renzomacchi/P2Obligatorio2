@@ -37,7 +37,7 @@ public class Autor {
         return generos;
     }
 
-    public void addGeneros(Genero genero) {
+    public void addGenero(Genero genero) {
         this.generos.add(genero);
     }
     
