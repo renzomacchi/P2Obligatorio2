@@ -34,4 +34,9 @@ public class Editorial {
         Editorial e = (Editorial)o;
         return this.getNombre().equals(e.getNombre());
     }
+    
+    @Override
+    public String toString() {
+        return this.getNombre() + " - " + this.getPais();
+    }
 }

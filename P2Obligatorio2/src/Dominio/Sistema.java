@@ -129,6 +129,23 @@ public class Sistema extends java.util.Observable {
         return this.getLAutores().contains(autor);  
     }
     
+    /**
+     * Devuelve todos los autores que escriban en algun genero
+     * @param gen
+     * @return
+     */
+    public ArrayList<Autor> autoresConGenero(String gen){
+        ArrayList<Autor> lista = new ArrayList<>();
+        Iterator<Autor> it = this.getLAutores().iterator();
+        while(it.hasNext()){
+            Autor miAutor = it.next();
+            if (miAutor.tieneGenero(this.getGenero(gen))) {
+                lista.add(miAutor);
+            }
+        }
+        return lista;
+    }
+    
     //  TODO SOBRE LIBROS
     //--------------------------------------------------------------------------
     public ArrayList<Libro> getLLibros() {
@@ -230,6 +247,28 @@ public class Sistema extends java.util.Observable {
         this.LGeneros.add(new Genero("Accion","mucha accion :O"));
         this.LGeneros.add(new Genero("Terror","santiago es gay"));
         this.LGeneros.add(new Genero("Aventura","wabiwabo"));
+        this.LGeneros.add(new Genero("Empty","sin Autores"));
+        this.LGeneros.add(new Genero("Mafia Boss lvl99","you should kys rn."));
+        ArrayList<Genero> gs1 = new ArrayList<>();
+        gs1.add(this.getGenero("Accion"));
+        gs1.add(this.getGenero("Terror"));
+        ArrayList<Genero> gs2 = new ArrayList<>();
+        gs2.add(this.getGenero("Aventura"));
+        gs2.add(this.getGenero("Terror"));
+        ArrayList<Genero> gs3 = new ArrayList<>();
+        gs2.add(this.getGenero("Mafia Boss lvl99"));
+        ArrayList<Genero> gs4 = new ArrayList<>();
+        gs1.add(this.getGenero("Accion"));
+        gs2.add(this.getGenero("Terror"));
+        gs2.add(this.getGenero("Aventura"));
+        gs2.add(this.getGenero("Mafia Boss lvl99"));
+        this.LAutores.add(new Autor("Rhoi verokai","Prussia",gs1));
+        this.LAutores.add(new Autor("RickRoller23","Guatepeor",gs2));
+        this.LAutores.add(new Autor("Bing chilling","Letonia",gs4));
+        this.LAutores.add(new Autor("demoknightTF2","The Greatkeep",gs1));
+        this.LAutores.add(new Autor("Dr sex","Fachalandia",gs2));
+        this.LAutores.add(new Autor("Leproso","Imperio Aleman",gs4));
+        this.LAutores.add(new Autor("MepicanlosCocos","Jamaica",gs3));
     }
 }
 

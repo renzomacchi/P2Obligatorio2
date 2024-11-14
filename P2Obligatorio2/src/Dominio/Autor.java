@@ -5,6 +5,7 @@
 package Dominio;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Autor {
     private String nombre;
@@ -39,6 +40,21 @@ public class Autor {
 
     public void addGenero(Genero genero) {
         this.generos.add(genero);
+    }
+    
+    /**
+     * Busca si este autor tiene el genero
+     * @param genero
+     * @return 
+     * True si contiene el genero, sino False
+     */
+    public boolean tieneGenero(Genero genero) {
+        boolean tiene = false;
+        Iterator<Genero> it = this.getGeneros().iterator();
+        while (it.hasNext() && !tiene) {
+            tiene = it.next().equals(genero);
+        }
+        return tiene;
     }
     
     @Override
