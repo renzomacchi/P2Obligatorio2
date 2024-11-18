@@ -17,7 +17,7 @@ public class Libro {
     private int stock;
     private File imagen;
     
-    public Libro(Editorial e,Genero g,Autor a,String is,String t,int pcosto,int pventa,int stock/*,File img*/){
+    public Libro(Editorial e,Genero g,Autor a,String is,String t,int pcosto,int pventa,int stock){
         this.editorial = e ;
         this.genero = g;
         this.autor = a;

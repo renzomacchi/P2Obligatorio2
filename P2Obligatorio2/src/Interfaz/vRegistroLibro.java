@@ -29,6 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class vRegistroLibro extends javax.swing.JFrame implements java.util.Observer{
      private Sistema modelo;
+     private String imgPath;
     
     /**
      * Creates new form vRegistroLibro
@@ -39,6 +40,7 @@ public class vRegistroLibro extends javax.swing.JFrame implements java.util.Obse
     
     public vRegistroLibro(Sistema modelo) {
         initComponents();
+        this.imgPath="";
         this.modelo=modelo;
         this.modelo.addObserver(this);
         objetoAPantalla();
@@ -314,12 +316,17 @@ public class vRegistroLibro extends javax.swing.JFrame implements java.util.Obse
             } else if (
                     !Validate.esEnteroPositivo(campos[2]) ||
                     !Validate.esEnteroPositivo(campos[3]) ||
-                    !Validate.esEnteroPositivo(campos[4])) {
+                    Integer.parseInt(campos[4])<0) {
                 Validate.mensaje(Validate.TXT_NO_NRO_POSITIVO);
             } else if (this.modelo.existeIsbn(campos[0])) {
                 Validate.mensaje(Validate.ISBN_REPETIDO);
             } else {
                 //Validacion exitosa a partir de este punto
+                if(!this.imgPath.equals("")){
+                    int punto=this.imgPath.lastIndexOf('.');
+                    String extencion= (punto == -1) ? "" : this.imgPath.substring(punto + 1);
+                    this.modelo.guardarImagen(this.imgPath,campos[0]+"."+extencion);
+                }
                 int precioC = Integer.parseInt(campos[2]);
                 int precioV = Integer.parseInt(campos[3]);
                 int stock = Integer.parseInt(campos[4]);
@@ -347,6 +354,7 @@ public class vRegistroLibro extends javax.swing.JFrame implements java.util.Obse
         if (result == JFileChooser.APPROVE_OPTION) {
             //Si el usuario eligio un archivo obtenemos el camino a ese archivo
             String camino = this.jFileChooser1.getSelectedFile().getAbsolutePath();
+            this.imgPath = camino;
             //Creamos un objeto ImageIcon y lo ponemos a escala con el label
             ImageIcon imIco = new ImageIcon(camino);
             Image img = imIco.getImage();

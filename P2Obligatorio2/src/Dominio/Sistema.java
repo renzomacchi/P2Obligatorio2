@@ -4,7 +4,23 @@
 */
 package Dominio;
 
+import Interfaz.Validate;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.*;
+
+
+//aca es la pruba que voy a hacer
+//**********************************
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+//**********************************
+//**********************************
 
 public class Sistema extends java.util.Observable {
     private ArrayList<Editorial> LEditoriales;
@@ -302,6 +318,40 @@ public class Sistema extends java.util.Observable {
         this.LAutores.add(new Autor("Leproso","Imperio Aleman",gs4));
         this.LAutores.add(new Autor("MepicanlosCocos","Jamaica",gs3));
     }
+    
+    public void guardarImagen(String path,String isbn){
+        File carpeta = new File("C:\\Users\\Usuario\\Desktop\\prueba");
+        carpeta.mkdirs();
+        String origenPath = (FileSystems.getDefault().getPath(path)).toString();
+        String destinoPath = "C:\\Users\\Usuario\\Desktop\\prueba\\"+isbn;
+        System.out.println(origenPath);
+        System.out.println(destinoPath);
+       /* try {
+            Files.move(origenPath, destinoPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            Validate.mensaje("no existe img");
+        }*/        
+        try {
+                File inFile = new File(origenPath);
+                File outFile = new File(destinoPath);
+
+                FileInputStream in = new FileInputStream(inFile);
+                FileOutputStream out = new FileOutputStream(outFile);
+
+                int c;
+                while( (c = in.read() ) != -1)
+                    out.write(c);
+
+                in.close();
+                out.close();
+            }
+        catch(IOException e) {
+                System.err.println("Hubo un error de entrada/salida!!!");
+        }
+    }
+    
+    
+    
 }
 
 
