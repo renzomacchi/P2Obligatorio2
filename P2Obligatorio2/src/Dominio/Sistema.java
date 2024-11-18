@@ -146,6 +146,18 @@ public class Sistema extends java.util.Observable {
         return lista;
     }
     
+    public Autor getAutor(String nombre){
+        ArrayList<Genero> l = new ArrayList<>();
+        Autor busco = new Autor(nombre,"",l);
+        int index = this.getLAutores().indexOf(busco);
+        if (index == -1) {
+            busco = new Autor(null,null,l);
+        } else {
+            busco = this.getLAutores().get(index);
+        }
+        return busco;
+    }
+    
     //  TODO SOBRE LIBROS
     //--------------------------------------------------------------------------
     public ArrayList<Libro> getLLibros() {
@@ -154,6 +166,26 @@ public class Sistema extends java.util.Observable {
 
     public void addLibro(Libro libro) {
         this.LLibros.add(libro);
+    }
+    
+    public boolean existeIsbn(String isbn){
+        boolean existe = false;
+        for(Libro l: this.getLLibros()){
+            if(l.getIsbn().equals(isbn) ){
+                existe=true;
+            }
+        }
+        return existe;
+    }
+    
+    public boolean existeTitulo(String titulo){
+        boolean existe = false;
+        for(Libro l: this.getLLibros()){
+            if(l.getTitulo().equals(titulo) ){
+                existe=true;
+            }
+        }
+    return existe;
     }
 
     //  TODO SOBRE VENTAS

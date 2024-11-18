@@ -6,6 +6,10 @@ package Interfaz;
 
 import Dominio.Sistema;
 import Dominio.Autor;
+import Dominio.Genero;
+import Dominio.Editorial;
+import Dominio.Libro;
+
 
 public class vRegistroLibro extends javax.swing.JFrame {
      private Sistema modelo;
@@ -26,6 +30,11 @@ public class vRegistroLibro extends javax.swing.JFrame {
     private void objetoAPantalla(){
         this.lEditorial.setListData(Sistema.toStringArray(this.modelo.getLEditoriales()));
         this.lGenero.setListData(Sistema.toStringArray(this.modelo.getLGeneros()));
+        this.txtIsbn.setText("");
+        this.txtCant.setText("");
+        this.txtTitulo.setText("");
+        this.txtPrecioC.setText("");
+        this.txtPrecioV.setText("");
     }
     
 
@@ -59,6 +68,7 @@ public class vRegistroLibro extends javax.swing.JFrame {
         txtPrecioV = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtCant = new javax.swing.JTextField();
+        btnConfirmar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de Libro");
@@ -75,11 +85,6 @@ public class vRegistroLibro extends javax.swing.JFrame {
 
         jLabel2.setText("Genero");
 
-        lAutor.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Extremely and annoyingly long and greatly stretched out item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         lAutor.setToolTipText("");
         jScrollPane3.setViewportView(lAutor);
 
@@ -174,6 +179,13 @@ public class vRegistroLibro extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,7 +208,10 @@ public class vRegistroLibro extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnConfirmar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -216,7 +231,10 @@ public class vRegistroLibro extends javax.swing.JFrame {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnConfirmar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -226,6 +244,88 @@ public class vRegistroLibro extends javax.swing.JFrame {
     private void lGeneroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lGeneroMouseClicked
         this.lAutor.setListData(Sistema.toStringArray(this.modelo.autoresConGenero(lGenero.getSelectedValue().split(" - ")[0])));
     }//GEN-LAST:event_lGeneroMouseClicked
+
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        // TODO add your handling code here:
+        String genSelec = this.lGenero.getSelectedValue();
+        String autSelec = this.lAutor.getSelectedValue();
+        String ediSelec = this.lEditorial.getSelectedValue();
+        Genero g = new Genero(null,null);
+        Autor a = new Autor();
+        Editorial ed = new Editorial(null,null);
+        
+        if(genSelec == null) {
+            Validate.mensaje("Por favor seleccione un genero");
+        } else {
+            g = this.modelo.getGenero(genSelec.split(" - ")[0]);
+        }
+        if(autSelec == null) {
+            Validate.mensaje("Por favor seleccione un autor");
+        } else {
+            a = this.modelo.getAutor(autSelec.split(" - ")[0]);
+        }
+        if(ediSelec == null) {
+            Validate.mensaje("Por favor seleccione un autor");
+        } else {
+            ed =this.modelo.getEditorial(ediSelec.split(" - ")[0]);
+        }
+        String isbn = this.txtIsbn.getText();
+        String titulo = this.txtTitulo.getText();
+        if(Validate.esTxtVacio(titulo)|| Validate.esTxtVacio(isbn)|| 
+                Validate.esTxtVacio(this.txtPrecioC.getText())||
+                Validate.esTxtVacio(this.txtPrecioV.getText())|| 
+                Validate.esTxtVacio(this.txtCant.getText())){
+            Validate.mensaje(Validate.TXT_VACIO);
+        }
+        else{
+            try{
+                int precioC = Integer.parseInt(this.txtPrecioC.getText());
+                int precioV = Integer.parseInt(this.txtPrecioV.getText());
+                int stock = Integer.parseInt(this.txtCant.getText());
+                if(this.modelo.existeIsbn(isbn)){
+                    Validate.mensaje("Isbn ya ingresado");
+                }
+                else{
+                    if(this.modelo.existeTitulo(titulo)){
+                        Validate.mensaje("Titulo ya ingresado");
+                    }
+                    else{
+                        if(precioC<0||precioV<0){
+                            Validate.mensaje("Por favor ingrese un precio mayor que 0");
+                        }
+                        else{
+                            if(stock<1){
+                                Validate.mensaje("Ingrese un stock valido");
+                            }
+                            else{
+                                // meter chekeo de imagen, si no hay poner que no hay imagen
+                                Libro l = new Libro(ed,g,a,isbn,titulo,precioC,precioV,stock);
+                                this.modelo.addLibro(l);
+                                this.txtIsbn.setText("");
+                                this.txtCant.setText("");
+                                this.txtTitulo.setText("");
+                                this.txtPrecioC.setText("");
+                                this.txtPrecioV.setText("");
+                            }
+                        }
+                    }
+                }
+                
+            }
+            catch (NumberFormatException e){
+                Validate.mensaje("por favor ingrese un numero");
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,6 +365,7 @@ public class vRegistroLibro extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

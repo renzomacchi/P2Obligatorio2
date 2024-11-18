@@ -12,6 +12,10 @@ public class Autor {
     private String nacionalidad;
     private ArrayList<Genero> generos;
     
+    public Autor(){
+        
+    }
+    
     public Autor(String nom, String nac, ArrayList<Genero> generos) {
         this.nombre = nom;
         this.nacionalidad = nac;
