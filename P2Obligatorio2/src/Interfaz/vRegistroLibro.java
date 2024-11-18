@@ -9,9 +9,25 @@ import Dominio.Autor;
 import Dominio.Genero;
 import Dominio.Editorial;
 import Dominio.Libro;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageFilter;
+import java.io.File;
+import java.io.IOException;
+import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
-public class vRegistroLibro extends javax.swing.JFrame {
+public class vRegistroLibro extends javax.swing.JFrame implements java.util.Observer{
      private Sistema modelo;
     
     /**
@@ -22,21 +38,46 @@ public class vRegistroLibro extends javax.swing.JFrame {
     }
     
     public vRegistroLibro(Sistema modelo) {
-        this.modelo=modelo;
         initComponents();
+        this.modelo=modelo;
+        this.modelo.addObserver(this);
         objetoAPantalla();
     }
     
     private void objetoAPantalla(){
-        this.lEditorial.setListData(Sistema.toStringArray(this.modelo.getLEditoriales()));
-        this.lGenero.setListData(Sistema.toStringArray(this.modelo.getLGeneros()));
+        //Actualizamos la lista de editoriales
+        DefaultListModel ediSelec = new DefaultListModel();
+        ediSelec.addAll(this.modelo.getLEditoriales());
+        this.lEditorial.setModel(ediSelec);
+
+        //Actualizamos la lista de generos
+        DefaultListModel genSelec = new DefaultListModel();
+        genSelec.addAll(this.modelo.getLGeneros());
+        this.lGenero.setModel(genSelec);
+        
+        //Actualizamos la lista de autores
+        actualizarAutores();
+    }
+    
+    public void actualizarAutores() {
+        DefaultListModel autSelec = new DefaultListModel();
+        String busqueda = "";
+        if (this.lGenero.getSelectedValue() != null) {
+            busqueda = this.lGenero.getSelectedValue().getNombre();
+        }
+        autSelec.addAll(this.modelo.getLAutoresConGenero(busqueda));
+        this.lAutor.setModel(autSelec);
+    }
+    
+    public void resetear() {
         this.txtIsbn.setText("");
         this.txtCant.setText("");
         this.txtTitulo.setText("");
         this.txtPrecioC.setText("");
         this.txtPrecioV.setText("");
+        this.lEditorial.clearSelection();
+        this.lGenero.clearSelection();
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,16 +88,10 @@ public class vRegistroLibro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         lEditorial = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        lAutor = new javax.swing.JList<>();
-        jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        lGenero = new javax.swing.JList<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtIsbn = new javax.swing.JTextField();
@@ -68,86 +103,61 @@ public class vRegistroLibro extends javax.swing.JFrame {
         txtPrecioV = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtCant = new javax.swing.JTextField();
-        btnConfirmar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        lGenero = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lAutor = new javax.swing.JList<>();
+        jPanel2 = new javax.swing.JPanel();
+        btnCargarFoto = new javax.swing.JButton();
+        lblDisplayFoto = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de Libro");
 
-        lEditorial.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Extremely and annoyingly long and greatly stretched out item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         lEditorial.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(lEditorial);
 
-        jLabel1.setText("Editorial");
+        jLabel1.setText("Editoriales");
 
-        jLabel2.setText("Genero");
-
-        lAutor.setToolTipText("");
-        jScrollPane3.setViewportView(lAutor);
-
-        jLabel3.setText("Autor");
-
-        jButton1.setText("Cargar Foto");
-
-        lGenero.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Extremely and annoyingly long and greatly stretched out item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        lGenero.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lGeneroMouseClicked(evt);
-            }
-        });
-        jScrollPane4.setViewportView(lGenero);
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
         jLabel4.setText("ISBN");
 
-        txtIsbn.setText("isbn");
-
         jLabel5.setText("Titulo");
-
-        txtTitulo.setText("titulo");
 
         jLabel6.setText("Precio de costo");
 
         jLabel7.setText("Precio de venta");
 
-        txtPrecioC.setText("cosot");
-
-        txtPrecioV.setText("costov");
-
         jLabel8.setText("Cantidad en stock");
-
-        txtCant.setText("stock");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addComponent(txtCant, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtPrecioV, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtPrecioC, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -176,15 +186,55 @@ public class vRegistroLibro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCant))
-                .addContainerGap())
+                .addGap(35, 35, 35))
         );
 
-        btnConfirmar.setText("Confirmar");
-        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConfirmarActionPerformed(evt);
+                btnRegistrarActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("Generos");
+
+        jLabel3.setText("Autores");
+
+        lGenero.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lGeneroValueChanged(evt);
+            }
+        });
+        jScrollPane4.setViewportView(lGenero);
+
+        lAutor.setToolTipText("");
+        jScrollPane3.setViewportView(lAutor);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+
+        btnCargarFoto.setText("Cargar Foto");
+        btnCargarFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarFotoActionPerformed(evt);
+            }
+        });
+
+        lblDisplayFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnCargarFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+            .addComponent(lblDisplayFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(btnCargarFoto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDisplayFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,26 +242,25 @@ public class vRegistroLibro extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(1, 1, 1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel3)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnConfirmar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegistrar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -219,113 +268,97 @@ public class vRegistroLibro extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnConfirmar)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane4))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lGeneroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lGeneroMouseClicked
-        this.lAutor.setListData(Sistema.toStringArray(this.modelo.autoresConGenero(lGenero.getSelectedValue().split(" - ")[0])));
-    }//GEN-LAST:event_lGeneroMouseClicked
-
-    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
-        String genSelec = this.lGenero.getSelectedValue();
-        String autSelec = this.lAutor.getSelectedValue();
-        String ediSelec = this.lEditorial.getSelectedValue();
-        Genero g = new Genero(null,null);
-        Autor a = new Autor();
-        Editorial ed = new Editorial(null,null);
+        Genero genSelec = this.lGenero.getSelectedValue();
+        Autor autSelec = this.lAutor.getSelectedValue();
+        Editorial ediSelec = this.lEditorial.getSelectedValue();
         
-        if(genSelec == null) {
-            Validate.mensaje("Por favor seleccione un genero");
+        //Validamos todos los datos antes de registrar
+        if (ediSelec == null) {
+            Validate.mensaje(Validate.EDITORIAL_NO_SELECCIONADO);
+        } else if (genSelec == null) {
+            Validate.mensaje(Validate.GENERO_NO_SELECCIONADO);
+        } else if (autSelec == null) {
+            Validate.mensaje(Validate.AUTOR_NO_SELECCIONADO);
         } else {
-            g = this.modelo.getGenero(genSelec.split(" - ")[0]);
-        }
-        if(autSelec == null) {
-            Validate.mensaje("Por favor seleccione un autor");
-        } else {
-            a = this.modelo.getAutor(autSelec.split(" - ")[0]);
-        }
-        if(ediSelec == null) {
-            Validate.mensaje("Por favor seleccione un autor");
-        } else {
-            ed =this.modelo.getEditorial(ediSelec.split(" - ")[0]);
-        }
-        String isbn = this.txtIsbn.getText();
-        String titulo = this.txtTitulo.getText();
-        if(Validate.esTxtVacio(titulo)|| Validate.esTxtVacio(isbn)|| 
-                Validate.esTxtVacio(this.txtPrecioC.getText())||
-                Validate.esTxtVacio(this.txtPrecioV.getText())|| 
-                Validate.esTxtVacio(this.txtCant.getText())){
-            Validate.mensaje(Validate.TXT_VACIO);
-        }
-        else{
-            try{
-                int precioC = Integer.parseInt(this.txtPrecioC.getText());
-                int precioV = Integer.parseInt(this.txtPrecioV.getText());
-                int stock = Integer.parseInt(this.txtCant.getText());
-                if(this.modelo.existeIsbn(isbn)){
-                    Validate.mensaje("Isbn ya ingresado");
-                }
-                else{
-                    if(this.modelo.existeTitulo(titulo)){
-                        Validate.mensaje("Titulo ya ingresado");
-                    }
-                    else{
-                        if(precioC<0||precioV<0){
-                            Validate.mensaje("Por favor ingrese un precio mayor que 0");
-                        }
-                        else{
-                            if(stock<1){
-                                Validate.mensaje("Ingrese un stock valido");
-                            }
-                            else{
-                                // meter chekeo de imagen, si no hay poner que no hay imagen
-                                Libro l = new Libro(ed,g,a,isbn,titulo,precioC,precioV,stock);
-                                this.modelo.addLibro(l);
-                                this.txtIsbn.setText("");
-                                this.txtCant.setText("");
-                                this.txtTitulo.setText("");
-                                this.txtPrecioC.setText("");
-                                this.txtPrecioV.setText("");
-                            }
-                        }
-                    }
-                }
-                
-            }
-            catch (NumberFormatException e){
-                Validate.mensaje("por favor ingrese un numero");
+            String[] campos = new String[5];
+            campos[0] = this.txtIsbn.getText();
+            campos[1] = this.txtTitulo.getText();
+            campos[2] = this.txtPrecioC.getText();
+            campos[3] = this.txtPrecioV.getText();
+            campos[4] = this.txtCant.getText();
+            if (Validate.sonTxtVacios(campos)) {
+                Validate.mensaje(Validate.TXT_VACIO);
+            } else if (
+                    !Validate.esEnteroPositivo(campos[2]) ||
+                    !Validate.esEnteroPositivo(campos[3]) ||
+                    !Validate.esEnteroPositivo(campos[4])) {
+                Validate.mensaje(Validate.TXT_NO_NRO_POSITIVO);
+            } else if (this.modelo.existeIsbn(campos[0])) {
+                Validate.mensaje(Validate.ISBN_REPETIDO);
+            } else {
+                //Validacion exitosa a partir de este punto
+                int precioC = Integer.parseInt(campos[2]);
+                int precioV = Integer.parseInt(campos[3]);
+                int stock = Integer.parseInt(campos[4]);
+                Libro l = new Libro(ediSelec,genSelec,autSelec,campos[0],campos[1],precioC,precioV,stock);
+                this.modelo.addLibro(l);
+                resetear();
+                Validate.mensaje("Libro registrado correctamente");
             }
         }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void lGeneroValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lGeneroValueChanged
+        //Actualizamos la lista de autores
+        actualizarAutores();
+    }//GEN-LAST:event_lGeneroValueChanged
+
+    private void btnCargarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarFotoActionPerformed
+        //Filtros para admitir solo imagenes
+        FileFilter imageFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
+        this.jFileChooser1.addChoosableFileFilter(imageFilter);
+        this.jFileChooser1.setAcceptAllFileFilterUsed(false);
         
-        
-        
-        
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_btnConfirmarActionPerformed
+        //Pedimos un archivo al usuario
+        int result = this.jFileChooser1.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            //Si el usuario eligio un archivo obtenemos el camino a ese archivo
+            String camino = this.jFileChooser1.getSelectedFile().getAbsolutePath();
+            //Creamos un objeto ImageIcon y lo ponemos a escala con el label
+            ImageIcon imIco = new ImageIcon(camino);
+            Image img = imIco.getImage();
+            Image imgScale = img.getScaledInstance(this.lblDisplayFoto.getWidth(), this.lblDisplayFoto.getHeight(), 100);
+            ImageIcon imScaled = new ImageIcon(imgScale);
+            //Lo mostramos en el label
+            this.lblDisplayFoto.setIcon(imScaled);
+            
+        } else if (result == JFileChooser.CANCEL_OPTION) {
+            //Si el usuario cancelo, no hacermos nada. (se cierra autormaticamente)
+        }
+    }//GEN-LAST:event_btnCargarFotoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -365,8 +398,9 @@ public class vRegistroLibro extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnConfirmar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCargarFoto;
+    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -376,16 +410,23 @@ public class vRegistroLibro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JList<String> lAutor;
-    private javax.swing.JList<String> lEditorial;
-    private javax.swing.JList<String> lGenero;
+    private javax.swing.JList<Autor> lAutor;
+    private javax.swing.JList<Editorial> lEditorial;
+    private javax.swing.JList<Genero> lGenero;
+    private javax.swing.JLabel lblDisplayFoto;
     private javax.swing.JTextField txtCant;
     private javax.swing.JTextField txtIsbn;
     private javax.swing.JTextField txtPrecioC;
     private javax.swing.JTextField txtPrecioV;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        objetoAPantalla();
+    }
 }

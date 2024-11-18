@@ -134,7 +134,7 @@ public class Sistema extends java.util.Observable {
      * @param gen
      * @return
      */
-    public ArrayList<Autor> autoresConGenero(String gen){
+    public ArrayList<Autor> getLAutoresConGenero(String gen){
         ArrayList<Autor> lista = new ArrayList<>();
         Iterator<Autor> it = this.getLAutores().iterator();
         while(it.hasNext()){
@@ -272,14 +272,14 @@ public class Sistema extends java.util.Observable {
     
     private void cargarDatos() {
         //BORRAR esta funcion antes de entregar
-        this.LEditoriales.add(new Editorial("e1","Uruguay"));
-        this.LEditoriales.add(new Editorial("e2","Argentina"));
-        this.LEditoriales.add(new Editorial("e3","Mexico"));
-        this.LEditoriales.add(new Editorial("e4","USA"));
+        this.LEditoriales.add(new Editorial("Editorial extraplana","Uruguay"));
+        this.LEditoriales.add(new Editorial("Editorial inflada","Argentina"));
+        this.LEditoriales.add(new Editorial("Editorial amurallada","Mexico"));
+        this.LEditoriales.add(new Editorial("Editorial libre","USA"));
         this.LGeneros.add(new Genero("Accion","mucha accion :O"));
         this.LGeneros.add(new Genero("Terror","santiago es gay"));
         this.LGeneros.add(new Genero("Aventura","wabiwabo"));
-        this.LGeneros.add(new Genero("Empty","sin Autores"));
+        this.LGeneros.add(new Genero("Empty","ejemplo sin Autores"));
         this.LGeneros.add(new Genero("Mafia Boss lvl99","you should kys rn."));
         ArrayList<Genero> gs1 = new ArrayList<>();
         gs1.add(this.getGenero("Accion"));
