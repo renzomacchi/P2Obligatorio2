@@ -320,10 +320,15 @@ public class Sistema extends java.util.Observable {
     }
     
     public void guardarImagen(String path,String isbn){
-        File carpeta = new File("C:\\Users\\Usuario\\Desktop\\prueba");
+        File currentDirFile = new File(".");
+        String helper = currentDirFile.getAbsolutePath();
+        helper= helper.substring(0, helper.length()-1)+"\\img";
+        
+        File carpeta = new File(helper);
         carpeta.mkdirs();
         String origenPath = (FileSystems.getDefault().getPath(path)).toString();
-        String destinoPath = "C:\\Users\\Usuario\\Desktop\\prueba\\"+isbn;
+        String destinoPath = helper+"\\"+isbn;
+        System.out.println(helper);
         System.out.println(origenPath);
         System.out.println(destinoPath);
        /* try {
