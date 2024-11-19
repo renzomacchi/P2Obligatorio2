@@ -9,18 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.*;
-
-
-//aca es la pruba que voy a hacer
-//**********************************
-import java.nio.file.Paths;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-//**********************************
-//**********************************
 
 public class Sistema extends java.util.Observable {
     private ArrayList<Editorial> LEditoriales;
@@ -182,6 +171,9 @@ public class Sistema extends java.util.Observable {
 
     public void addLibro(Libro libro) {
         this.LLibros.add(libro);
+        Collections.sort(this.getLLibros());
+        setChanged();
+        notifyObservers();
     }
     
     public boolean existeIsbn(String isbn){
@@ -201,7 +193,45 @@ public class Sistema extends java.util.Observable {
                 existe=true;
             }
         }
-    return existe;
+        return existe;
+    }
+    
+    /**
+     * Dado un camino y un isbn tomamos la foto en ese camino y la guardamos con nombre <code>isbn</code>
+     * <br>
+     * Crea una carpeta "img" local (si no existia) y guarda las imagenes ahi
+     * @param path
+     * Camino donde se encuentra la foto
+     * @param isbn 
+     * Identificador unico de la imagen (Isbn)
+     */
+    public void guardarImagen(String path,String isbn){
+        //Creamos una Carpeta si es que no existe
+        File carpeta = new File("img");
+        carpeta.mkdirs();
+        try {
+            //inFile es la foto seleccionada
+            File inFile = new File(path);
+            //outFile es el camino a la copia de la foto y su nombre (isbn)
+            File outFile = new File("img\\"+isbn);
+            
+            FileInputStream in = new FileInputStream(inFile);
+            FileOutputStream out = new FileOutputStream(outFile);
+            //Copiamos la foto y la pegamos en nuestra carpeta de img
+            int c = in.read();
+            //El in.read() va leyendo los bytes de la foto,
+            //cuando termina de leer devuelve -1;
+            while(c != -1) {
+                out.write(c);
+                c = in.read();
+            }
+            in.close();
+            out.close();
+        }
+        catch(IOException e) {
+                Validate.mensaje("Hubo un error al intentar guardar la foto.");
+                System.err.println(e);
+        }
     }
 
     //  TODO SOBRE VENTAS
@@ -282,81 +312,68 @@ public class Sistema extends java.util.Observable {
     //  BORRAR LO DE ABAJO ANTES DE ENTREGAR
     //--------------------------------------------------------------------------
     
-    //1. Todas las ventanas de registrar autores tienen linkeadas
-    //   la seleccion de generos
-    //2. Se pueden seleccionar generos iguales en registro de autores
+    //1. El archivo de ventas lo guarda donde el usuario quiera
     
     private void cargarDatos() {
         //BORRAR esta funcion antes de entregar
-        this.LEditoriales.add(new Editorial("Editorial extraplana","Uruguay"));
-        this.LEditoriales.add(new Editorial("Editorial inflada","Argentina"));
-        this.LEditoriales.add(new Editorial("Editorial amurallada","Mexico"));
-        this.LEditoriales.add(new Editorial("Editorial libre","USA"));
-        this.LGeneros.add(new Genero("Accion","mucha accion :O"));
-        this.LGeneros.add(new Genero("Terror","santiago es gay"));
-        this.LGeneros.add(new Genero("Aventura","wabiwabo"));
-        this.LGeneros.add(new Genero("Empty","ejemplo sin Autores"));
-        this.LGeneros.add(new Genero("Mafia Boss lvl99","you should kys rn."));
-        ArrayList<Genero> gs1 = new ArrayList<>();
-        gs1.add(this.getGenero("Accion"));
-        gs1.add(this.getGenero("Terror"));
-        ArrayList<Genero> gs2 = new ArrayList<>();
-        gs2.add(this.getGenero("Aventura"));
-        gs2.add(this.getGenero("Terror"));
-        ArrayList<Genero> gs3 = new ArrayList<>();
-        gs2.add(this.getGenero("Mafia Boss lvl99"));
-        ArrayList<Genero> gs4 = new ArrayList<>();
-        gs1.add(this.getGenero("Accion"));
-        gs2.add(this.getGenero("Terror"));
-        gs2.add(this.getGenero("Aventura"));
-        gs2.add(this.getGenero("Mafia Boss lvl99"));
-        this.LAutores.add(new Autor("Rhoi verokai","Prussia",gs1));
-        this.LAutores.add(new Autor("RickRoller23","Guatepeor",gs2));
-        this.LAutores.add(new Autor("Bing chilling","Letonia",gs4));
-        this.LAutores.add(new Autor("demoknightTF2","The Greatkeep",gs1));
-        this.LAutores.add(new Autor("Dr sex","Fachalandia",gs2));
-        this.LAutores.add(new Autor("Leproso","Imperio Aleman",gs4));
-        this.LAutores.add(new Autor("MepicanlosCocos","Jamaica",gs3));
+        Editorial e1 = new Editorial("Editorial extraplana","Uruguay");
+        Editorial e2 = new Editorial("Editorial inflada","Argentina");
+        Editorial e3 = new Editorial("Editorial amurallada","Mexico");
+        Editorial e4 = new Editorial("Editorial libre","USA");
+        Genero g1 = new Genero("Accion","mucha accion :O");
+        Genero g2 = new Genero("Terror","santiago es gay");
+        Genero g3 = new Genero("Aventura","wabiwabo");
+        Genero g4 = new Genero("Empty","ejemplo sin Autores");
+        Genero g5 = new Genero("Mafia Boss lvl99","you should kys rn.");
+        ArrayList<Genero> gs1_2 = new ArrayList<>();
+        gs1_2.add(g1);
+        gs1_2.add(g2);
+        ArrayList<Genero> gs2_3 = new ArrayList<>();
+        gs2_3.add(g2);
+        gs2_3.add(g3);
+        ArrayList<Genero> gs5 = new ArrayList<>();
+        gs5.add(g5);
+        ArrayList<Genero> gs1_2_3_5 = new ArrayList<>();
+        gs1_2_3_5.add(g1);
+        gs1_2_3_5.add(g2);
+        gs1_2_3_5.add(g3);
+        gs1_2_3_5.add(g5);
+        Autor a1 = new Autor("Rhoi verokai","Prussia",gs1_2);
+        Autor a2 = new Autor("RickRoller23","Guatepeor",gs2_3);
+        Autor a3 = new Autor("Bing chilling","Letonia",gs1_2_3_5);
+        Autor a4 = new Autor("demoknightTF2","The Greatkeep",gs1_2);
+        Autor a5 = new Autor("Dr sex","Fachalandia",gs2_3);
+        Autor a6 = new Autor("Leproso","Imperio Aleman",gs1_2_3_5);
+        Autor a7 = new Autor("MepicanlosCocos","Jamaica",gs5);
+        Libro l1 = new Libro("DRSEX","Aviacion 1",e1,g1,a1,1,1,1);
+        Libro l6 = new Libro("123LOG","Comecactus",e4,g3,a5,1,1,1);
+        Libro l2 = new Libro("KLMNQ","Aviacion 2",e2,g2,a1,1,1,1);
+        Libro l4 = new Libro("MANCE2","Bombinomicon",e3,g1,a4,1,1,1);
+        Libro l5 = new Libro("3JESUS","Zapatos",e3,g5,a6,1,1,1);
+        Libro l3 = new Libro("B1232","Aviacion 3",e3,g1,a1,1,1,1);
+        this.addEditorial(e1);
+        this.addEditorial(e2);
+        this.addEditorial(e3);
+        this.addEditorial(e4);
+        this.addGenero(g1);
+        this.addGenero(g2);
+        this.addGenero(g3);
+        this.addGenero(g4);
+        this.addGenero(g5);
+        this.addAutor(a1);
+        this.addAutor(a2);
+        this.addAutor(a3);
+        this.addAutor(a4);
+        this.addAutor(a5);
+        this.addAutor(a6);
+        this.addAutor(a7);
+        this.addLibro(l1);
+        this.addLibro(l2);
+        this.addLibro(l3);
+        this.addLibro(l4);
+        this.addLibro(l5);
+        this.addLibro(l6);
     }
-    
-    public void guardarImagen(String path,String isbn){
-        File currentDirFile = new File(".");
-        String helper = currentDirFile.getAbsolutePath();
-        helper= helper.substring(0, helper.length()-1)+"\\img";
-        
-        File carpeta = new File(helper);
-        carpeta.mkdirs();
-        String origenPath = (FileSystems.getDefault().getPath(path)).toString();
-        String destinoPath = helper+"\\"+isbn;
-        System.out.println(helper);
-        System.out.println(origenPath);
-        System.out.println(destinoPath);
-       /* try {
-            Files.move(origenPath, destinoPath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            Validate.mensaje("no existe img");
-        }*/        
-        try {
-                File inFile = new File(origenPath);
-                File outFile = new File(destinoPath);
-
-                FileInputStream in = new FileInputStream(inFile);
-                FileOutputStream out = new FileOutputStream(outFile);
-
-                int c;
-                while( (c = in.read() ) != -1)
-                    out.write(c);
-
-                in.close();
-                out.close();
-            }
-        catch(IOException e) {
-                System.err.println("Hubo un error de entrada/salida!!!");
-        }
-    }
-    
-    
-    
 }
 
 

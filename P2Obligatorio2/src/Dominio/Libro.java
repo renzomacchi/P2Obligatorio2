@@ -6,29 +6,42 @@ package Dominio;
 
 import java.io.File;
 
-public class Libro {
+public class Libro implements Comparable<Libro> {
+    private String isbn;
+    private String titulo;
     private Editorial editorial;
     private Genero genero;
     private Autor autor;
-    private String isbn;
-    private String titulo;
     private int pCosto;
     private int pVenta;
     private int stock;
-    private File imagen;
     
-    public Libro(Editorial e,Genero g,Autor a,String is,String t,int pcosto,int pventa,int stock){
+    public Libro(String isbn,String titulo,Editorial e,Genero g,Autor a,int pcosto,int pventa,int stock){
+        this.titulo = titulo;
+        this.isbn = isbn;
         this.editorial = e ;
         this.genero = g;
         this.autor = a;
-        this.isbn = is;
-        this.titulo = t;
         this.pCosto = pcosto;
         this.pVenta = pventa;
         this.stock = stock;
-        //this.imagen = img ;
     } 
+    
+    public String getIsbn() {
+        return isbn;
+    }
 
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+    
     public Editorial getEditorial() {
         return editorial;
     }
@@ -53,22 +66,6 @@ public class Libro {
         this.autor = autor;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public int getpCosto() {
         return pCosto;
     }
@@ -84,18 +81,19 @@ public class Libro {
     public void setpVenta(int pVenta) {
         this.pVenta = pVenta;
     }
-
-    public File getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(File imagen) {
-        this.imagen = imagen;
-    }
     
     @Override
     public String toString() {
-        return this.getTitulo() + " - " + this.getIsbn();
+        return this.getIsbn() + " - " + this.getTitulo();
+    }
+    
+    @Override
+    public int compareTo(Libro l) {
+        int dif = this.getTitulo().toLowerCase().compareTo(l.getTitulo().toLowerCase());
+        if (dif == 0) {
+            dif = this.getIsbn().compareTo(l.getIsbn());
+        }
+        return dif;
     }
     
     

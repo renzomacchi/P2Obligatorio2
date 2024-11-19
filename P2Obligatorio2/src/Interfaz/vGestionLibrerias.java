@@ -173,7 +173,7 @@ public class vGestionLibrerias extends javax.swing.JFrame {
 
     private void btnRegistrarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarVentaActionPerformed
         //Abrir Ventana para Registrar una Venta
-        vVentaLibros vl = new vVentaLibros();
+        vVentaLibros vl = new vVentaLibros(this.modelo);
         vl.setVisible(true);
     }//GEN-LAST:event_btnRegistrarVentaActionPerformed
 
