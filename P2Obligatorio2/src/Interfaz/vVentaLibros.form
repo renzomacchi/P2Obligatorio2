@@ -220,7 +220,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Libro&gt;"/>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ItemVenta&gt;"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -251,7 +251,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Venta"/>
+            <Property name="text" type="java.lang.String" value="Carrito"/>
           </Properties>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler1">

@@ -10,6 +10,7 @@ import javax.swing.DefaultListModel;
 
 public class vVentaLibros extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;
+    private Factura factura;
 
     public vVentaLibros() {
         initComponents();
@@ -19,14 +20,14 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         initComponents();
         this.modelo = modelo;
         this.modelo.addObserver(this);
+        this.factura = new Factura();
         objetoAPantalla();
     }
     
     public void objetoAPantalla() {
         //Actualizamos la lista de libros
-        DefaultListModel libros = new DefaultListModel();
-        libros.addAll(this.modelo.getLLibros());
-        this.listLibros.setModel(libros);
+        this.listLibros.setListData(this.modelo.getLLibros().toArray(new Libro[this.modelo.getLLibros().size()]));
+        this.listVenta.setListData(this.factura.getItems().toArray(new ItemVenta[this.factura.getItems().size()]));
     }
 
     /**
@@ -132,7 +133,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
 
         jLabel4.setText("Libros");
 
-        jLabel5.setText("Venta");
+        jLabel5.setText("Carrito");
 
         lblPrecioTotal.setText("Total: $0000000");
 
@@ -266,11 +267,23 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
-        // TODO add your handling code here:
+        Libro selec = this.listLibros.getSelectedValue();
+        if(selec == null) {
+            Validate.mensaje(Validate.LIBRO_NO_SELECCIONADO);
+        } else {
+            ItemVenta item = new ItemVenta(selec,1);
+            factura.addItem(item);
+            objetoAPantalla();
+        }
     }//GEN-LAST:event_btnAgregarLibroActionPerformed
 
     private void btnEliminarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarLibroActionPerformed
-        // TODO add your handling code here:
+        ItemVenta selec = this.listVenta.getSelectedValue();
+        if(selec == null) {
+            Validate.mensaje(Validate.ITEM_VENTA_NO_SELECCIONADO);
+        } else {
+            //Agregar en factura funcion "eliminarItem(item)"
+        }
     }//GEN-LAST:event_btnEliminarLibroActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -345,7 +358,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
     private javax.swing.JLabel lblNum;
     private javax.swing.JLabel lblPrecioTotal;
     private javax.swing.JList<Libro> listLibros;
-    private javax.swing.JList<Libro> listVenta;
+    private javax.swing.JList<ItemVenta> listVenta;
     private javax.swing.JTextField txtCliente;
     private javax.swing.JFormattedTextField txtFecha;
     // End of variables declaration//GEN-END:variables

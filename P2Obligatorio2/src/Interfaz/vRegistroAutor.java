@@ -4,6 +4,7 @@
 */
 package Interfaz;
 import Dominio.*;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.DefaultListModel;
 public class vRegistroAutor extends javax.swing.JFrame implements java.util.Observer {
@@ -25,16 +26,15 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
     
     private void objetoAPantalla() {
         //Actualizamos la lista de generos
-        DefaultListModel gens = new DefaultListModel();
-        gens.addAll(this.modelo.getLGenerosNoSeleccionados());
-        this.listaGeneros.setModel(gens);
+        ArrayList<Genero> gensNoSelec = this.modelo.getLGenerosNoSeleccionados();
+        this.listaGeneros.setListData(gensNoSelec.toArray(new Genero[gensNoSelec.size()]));
         
         //Actualizamos la lista de generos seleccionados
-        DefaultListModel gensSelec = new DefaultListModel();
-        gensSelec.addAll(this.modelo.getLGenerosSeleccionados());
-        this.listaGenerosSeleccionados.setModel(gensSelec);
+        ArrayList<Genero> gensSelec = this.modelo.getLGenerosSeleccionados();
+        this.listaGenerosSeleccionados.setListData(gensSelec.toArray(new Genero[gensSelec.size()]));
         
-        this.listaAutores.setListData(Sistema.toStringArray(this.modelo.getLAutores()));
+        //Actualizamos la lista de autores
+        this.listaAutores.setListData(this.modelo.getLAutores().toArray(new Autor[this.modelo.getLAutores().size()]));
     }
 
     /**
@@ -296,7 +296,7 @@ public class vRegistroAutor extends javax.swing.JFrame implements java.util.Obse
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
-    private javax.swing.JList<String> listaAutores;
+    private javax.swing.JList<Autor> listaAutores;
     private javax.swing.JList<Genero> listaGeneros;
     private javax.swing.JList<Genero> listaGenerosSeleccionados;
     private javax.swing.JTextField txtNacionalidad;

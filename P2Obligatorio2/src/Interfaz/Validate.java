@@ -23,6 +23,8 @@ public abstract class Validate {
     public final static String GENERO_NO_SELECCIONADO = "Seleccione un Genero";
     public final static String AUTOR_NO_SELECCIONADO = "Seleccione un Autor";
     public final static String EDITORIAL_NO_SELECCIONADO = "Seleccione una Editorial";
+    public final static String LIBRO_NO_SELECCIONADO = "Seleccione un Libro";
+    public final static String ITEM_VENTA_NO_SELECCIONADO = "Seleccione un item de su carrito";
     public final static String AUTOR_REPETIDO = "Ya se ha ingresado un Autor con ese nombre";
     
     public static void mensaje(String mensaje) {

@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,27 +49,23 @@ public class vRegistroLibro extends javax.swing.JFrame implements java.util.Obse
     
     private void objetoAPantalla(){
         //Actualizamos la lista de editoriales
-        DefaultListModel ediSelec = new DefaultListModel();
-        ediSelec.addAll(this.modelo.getLEditoriales());
-        this.lEditorial.setModel(ediSelec);
+        this.lEditorial.setListData(this.modelo.getLEditoriales().toArray(new Editorial[this.modelo.getLEditoriales().size()]));
 
         //Actualizamos la lista de generos
-        DefaultListModel genSelec = new DefaultListModel();
-        genSelec.addAll(this.modelo.getLGeneros());
-        this.lGenero.setModel(genSelec);
+        this.lGenero.setListData(this.modelo.getLGeneros().toArray(new Genero[this.modelo.getLGeneros().size()]));
         
         //Actualizamos la lista de autores
         actualizarAutores();
     }
     
     public void actualizarAutores() {
-        DefaultListModel autSelec = new DefaultListModel();
         String busqueda = "";
         if (this.lGenero.getSelectedValue() != null) {
             busqueda = this.lGenero.getSelectedValue().getNombre();
         }
-        autSelec.addAll(this.modelo.getLAutoresConGenero(busqueda));
-        this.lAutor.setModel(autSelec);
+        //Actualizamos la lista de autores
+        ArrayList<Autor> autores = this.modelo.getLAutoresConGenero(busqueda);
+        this.lAutor.setListData(autores.toArray(new Autor[autores.size()]));
     }
     
     public void resetearForm() {

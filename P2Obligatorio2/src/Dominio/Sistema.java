@@ -16,7 +16,7 @@ public class Sistema extends java.util.Observable {
     private ArrayList<Genero> LGeneros;
     private ArrayList<Autor> LAutores;
     private ArrayList<Libro> LLibros;
-    private ArrayList<Venta> LVentas;
+    private ArrayList<Factura> LFacturas;
     private ArrayList<Genero> LGenerosSeleccionados;
 
     public Sistema() {
@@ -24,7 +24,7 @@ public class Sistema extends java.util.Observable {
         this.LGeneros = new ArrayList<>();
         this.LAutores = new ArrayList<>();
         this.LLibros = new ArrayList<>();
-        this.LVentas = new ArrayList<>();
+        this.LFacturas = new ArrayList<>();
         this.LGenerosSeleccionados = new ArrayList<>();
         this.cargarDatos();
     }
@@ -234,14 +234,14 @@ public class Sistema extends java.util.Observable {
         }
     }
 
-    //  TODO SOBRE VENTAS
+    //  TODO SOBRE FACTURAS
     //--------------------------------------------------------------------------
-    public ArrayList<Venta> getlVentas() {
-        return LVentas;
+    public ArrayList<Factura> getLFacturas() {
+        return LFacturas;
     }
 
-    public void addVenta(Venta venta) {
-        this.LVentas.add(venta);
+    public void addFactura(Factura factura) {
+        this.LFacturas.add(factura);
     }
     
     //  TODO SOBRE GENEROS SELECCIONADOS
@@ -288,26 +288,6 @@ public class Sistema extends java.util.Observable {
     public void resetLGenerosSeleccionados() {
         this.LGenerosSeleccionados = new ArrayList<Genero>();
     }
-    
-    //  UTILIDAD
-    //--------------------------------------------------------------------------
-    /**
-     * Devuelve un ArrayList de Strings conteniendo todos los Objetos.toString()
-     * @param array
-     * @return
-     * String[array.size()] conteniendo todos los objectos del array en forma de String
-     */
-    public static String[] toStringArray(ArrayList<?> array) {
-        String[] stringificar = new String[array.size()];
-        Iterator<?> it = array.iterator();
-        int i = 0;
-        while (it.hasNext()) {
-            stringificar[i] = it.next().toString();
-            i++;
-        }
-        return stringificar;
-    }
-    
     
     //  BORRAR LO DE ABAJO ANTES DE ENTREGAR
     //--------------------------------------------------------------------------

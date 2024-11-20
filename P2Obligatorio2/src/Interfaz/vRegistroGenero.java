@@ -26,8 +26,8 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
     }
     
     private void objetoAPantalla() {
-        //Obtenemos la lista
-        this.listGeneros.setListData(Sistema.toStringArray(this.modelo.getLGeneros()));
+        //Obtenemos la lista de generos
+        this.listGeneros.setListData(this.modelo.getLGeneros().toArray(new Genero[this.modelo.getLGeneros().size()]));
     }
 
     /**
@@ -64,11 +64,6 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
 
         jLabel3.setText("Generos Existentes:");
 
-        listGeneros.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         listGeneros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listGeneros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(listGeneros);
@@ -176,7 +171,7 @@ public class vRegistroGenero extends javax.swing.JFrame implements java.util.Obs
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> listGeneros;
+    private javax.swing.JList<Genero> listGeneros;
     private javax.swing.JTextField txtDesc;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables

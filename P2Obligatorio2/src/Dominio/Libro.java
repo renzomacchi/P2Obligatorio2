@@ -81,6 +81,14 @@ public class Libro implements Comparable<Libro> {
     public void setpVenta(int pVenta) {
         this.pVenta = pVenta;
     }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
     
     @Override
     public String toString() {
