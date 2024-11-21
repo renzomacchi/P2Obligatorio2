@@ -244,6 +244,19 @@ public class Sistema extends java.util.Observable {
         this.LFacturas.add(factura);
     }
     
+    public Factura getFactura(String id){
+        boolean encontrado = false;
+        Iterator<Factura> it = this.getLFacturas().iterator();
+        Factura f = new Factura();
+        while(it.hasNext()&&!encontrado){
+            f = it.next();
+            if(f.getNum()==Integer.parseInt(id)){
+                encontrado = true;
+            }
+        }
+        return f;
+    }
+    
     //  TODO SOBRE GENEROS SELECCIONADOS
     //--------------------------------------------------------------------------
     public ArrayList<Genero> getLGenerosSeleccionados() {
@@ -287,6 +300,15 @@ public class Sistema extends java.util.Observable {
     
     public void resetLGenerosSeleccionados() {
         this.LGenerosSeleccionados = new ArrayList<Genero>();
+    }
+    
+    public String[] nomeandaeltoarray(ArrayList<ItemVenta> a){
+        String[] array=new String[a.size()];
+        int pos=0;
+        for(ItemVenta c: a){
+            array[pos]=c.toString();
+        }
+        return array;
     }
     
     //  BORRAR LO DE ABAJO ANTES DE ENTREGAR
@@ -354,6 +376,9 @@ public class Sistema extends java.util.Observable {
         this.addLibro(l5);
         this.addLibro(l6);
     }
+    
+    
+    
 }
 
 

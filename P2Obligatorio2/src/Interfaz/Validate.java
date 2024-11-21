@@ -62,7 +62,7 @@ public abstract class Validate {
     public static boolean esEnteroPositivo(String campo) {
         boolean result = true;
         try {
-            result = Integer.parseInt(campo) > 0;
+            result = Integer.parseInt(campo) >= 0;
         } catch (NumberFormatException e) {
             result = false;
         }

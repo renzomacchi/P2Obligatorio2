@@ -28,6 +28,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         //Actualizamos la lista de libros
         this.listLibros.setListData(this.modelo.getLLibros().toArray(new Libro[this.modelo.getLLibros().size()]));
         this.listVenta.setListData(this.factura.getItems().toArray(new ItemVenta[this.factura.getItems().size()]));
+        this.lblPrecioTotal.setText("Total: $"+ this.factura.saberTotal());
     }
 
     /**
@@ -228,11 +229,12 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNum, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -282,12 +284,33 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         if(selec == null) {
             Validate.mensaje(Validate.ITEM_VENTA_NO_SELECCIONADO);
         } else {
-            //Agregar en factura funcion "eliminarItem(item)"
+            factura.eliminarItem(selec);
+            objetoAPantalla();
         }
     }//GEN-LAST:event_btnEliminarLibroActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
+        if(this.factura.getItems().isEmpty()){
+            Validate.mensaje("Por favor ingrese algun libro");
+        }
+        else{
+            if(this.factura.totalPosta()!=this.factura.saberTotal()){
+                Validate.mensaje("Se ingreso un libro mas veces de lo que esta en stock, nuevo precio = "+this.factura.totalPosta());
+            }
+            Factura f = new Factura(this.txtCliente.getText(),this.txtFecha.getText(),this.factura.getItems(),this.factura.totalPosta());
+            
+            this.modelo.addFactura(this.factura);
+            for(Factura i : this.modelo.getLFacturas()){
+                System.out.println(i);
+            }
+            lblNum.setText(""+this.factura.siguienteID());
+            this.factura = new Factura();
+            this.txtCliente.setText("");
+            this.txtFecha.setText("");
+            objetoAPantalla();
+         
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

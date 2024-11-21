@@ -8,18 +8,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Factura {
-    private static int ID = 0;
+    public static int ID = 0;
     
     private int num;
     private String cliente;
     private String fecha;
     private ArrayList<ItemVenta> items;
+    private int total;
     
-    public Factura(String cliente, String fecha, ArrayList<ItemVenta> items) {
+    public Factura(String cliente, String fecha, ArrayList<ItemVenta> items,int total) {
         this.num = ID;
         this.cliente = cliente;
         this.fecha = fecha;
         this.items = items;
+        this.total= total;
     }
     
     public Factura() {
@@ -27,8 +29,13 @@ public class Factura {
         this.cliente = "";
         this.fecha = "";
         this.items = new ArrayList<ItemVenta>();
+        this.total=0;
     }
     
+    
+    public int getID(){
+        return this.ID;
+    }
     /**
      * Aumenta el ID y lo devuelve
      * @return 
@@ -70,6 +77,11 @@ public class Factura {
     public ItemVenta getItem(ItemVenta item) {
         return this.getItems().get(this.getItems().indexOf(item));
     }
+    
+    
+    public void setTotal(int n){
+        this.total= n;
+    }
 
     /**
      * Agrega un item a esta factura, si ya existia, aumenta en cantidad
@@ -86,8 +98,44 @@ public class Factura {
         
     }
     
+    public void eliminarItem(ItemVenta item){
+        if(item.getCantidad()==1){
+            this.getItems().remove(item);
+        }
+        else{
+            ItemVenta aux = this.getItem(item);
+            aux.setCantidad(aux.getCantidad()-1);
+        }
+    }
+    
     public boolean existeItem(ItemVenta item) {
         return this.getItems().contains(item);
+    }
+    
+    public int saberTotal(){
+        int t = 0;
+        for(ItemVenta i: this.items){
+            t+=i.getLibro().getpVenta()*i.getCantidad();
+        }
+        return t;
+    }
+    
+    public int totalPosta(){
+        int t= 0;
+        for(ItemVenta i: this.items){
+            if(i.getCantidad()>i.getLibro().getStock()){
+                t+=i.getLibro().getStock();
+            }
+            else{
+            t+=i.getLibro().getpVenta()*i.getCantidad();
+            }
+        }
+        return t;
+    }
+    
+    @Override
+    public String toString() {
+        return this.cliente+" - "+this.fecha+" - "+this.getNum();
     }
     
     
