@@ -9,8 +9,12 @@ public class Genero {
     private String desc;
 
     public Genero(String nombre, String desc) {
-        this.setNombre(nombre);
-        this.setDesc(desc);
+        this.nombre = (nombre);
+        this.desc =(desc);
+    }
+    
+    public Genero(String nombre) {
+        this.nombre = nombre;
     }
     
     public String getNombre() {

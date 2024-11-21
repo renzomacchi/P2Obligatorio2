@@ -57,13 +57,13 @@ public class Sistema extends java.util.Observable {
     /**
      * Busca una Editorial que tenga a {@code nombre} como nombre
      * @param nombre El String es case sensitive
-     * @return Devuelve una Editorial, si no encuentra devuelve una Editorial nula
+     * @return Devuelve una Editorial, si no encuentra devuelve una Editorial vacia
      */
     public Editorial getEditorial(String nombre) {
-        Editorial busco = new Editorial(nombre,"");
+        Editorial busco = new Editorial(nombre);
         int index = this.getLEditoriales().indexOf(busco);
         if (index == -1) {
-            busco = new Editorial(null,null);
+            busco = new Editorial("");
         } else {
             busco = this.getLEditoriales().get(index);
         }
@@ -96,15 +96,16 @@ public class Sistema extends java.util.Observable {
     }
     
     /**
-     * Busca un Genero que tenga a {@code nombre} como nombre
+     * Busca un Genero que tenga a {@code nombre} como nombre<br>
      * @param nombre El String es case sensitive
-     * @return Devuelve un Genero, si no encuentra devuelve un Genero nulo
+     * @return
+     * Devuelve un Genero, si no encuentra devuelve un Genero vacio
      */
     public Genero getGenero(String nombre) {
-        Genero busco = new Genero(nombre,"");
+        Genero busco = new Genero(nombre);
         int index = this.getLGeneros().indexOf(busco);
         if (index == -1) {
-            busco = new Genero(null,null);
+            busco = new Genero("");
         } else {
             busco = this.getLGeneros().get(index);
         }
@@ -151,12 +152,18 @@ public class Sistema extends java.util.Observable {
         return lista;
     }
     
+    /**
+     * Busca un Autor que tenga a {@code nombre} como nombre<br>
+     * @param nombre El String es case sensitive
+     * @return
+     * Devuelve un Autor, si no encuentra devuelve un Autor vacio
+     */
     public Autor getAutor(String nombre){
         ArrayList<Genero> l = new ArrayList<>();
-        Autor busco = new Autor(nombre,"",l);
+        Autor busco = new Autor(nombre);
         int index = this.getLAutores().indexOf(busco);
         if (index == -1) {
-            busco = new Autor(null,null,l);
+            busco = new Autor("");
         } else {
             busco = this.getLAutores().get(index);
         }
@@ -186,14 +193,28 @@ public class Sistema extends java.util.Observable {
         return existe;
     }
     
-    public boolean existeTitulo(String titulo){
-        boolean existe = false;
-        for(Libro l: this.getLLibros()){
-            if(l.getTitulo().equals(titulo) ){
-                existe=true;
-            }
+    /**
+     * Busca un Libro que tenga a {@code isbn} como isbn<br>
+     * @param isbn El String es case sensitive
+     * @return
+     * Devuelve un Libro, si no encuentra devuelve un Libro vacio
+     */
+    public Libro getLibro(String isbn) {
+        ArrayList<Libro> l = new ArrayList<>();
+        Libro busco = new Libro(isbn);
+        int index = this.getLLibros().indexOf(busco);
+        if (index == -1) {
+            busco = new Libro("");
+        } else {
+            busco = this.getLLibros().get(index);
         }
-        return existe;
+        return busco;
+    }
+    
+    public void eliminarLibro(Libro l) {
+        this.getLLibros().remove(l);
+        setChanged();
+        notifyObservers();
     }
     
     /**
@@ -241,20 +262,68 @@ public class Sistema extends java.util.Observable {
     }
 
     public void addFactura(Factura factura) {
+        factura.setNum(Factura.getID());
         this.LFacturas.add(factura);
+        Factura.siguienteID();
+        setChanged();
+        notifyObservers();
     }
     
-    public Factura getFactura(String id){
-        boolean encontrado = false;
-        Iterator<Factura> it = this.getLFacturas().iterator();
-        Factura f = new Factura();
-        while(it.hasNext()&&!encontrado){
-            f = it.next();
-            if(f.getNum()==Integer.parseInt(id)){
-                encontrado = true;
+    /**
+     * Busca una Factura que tenga a {@code id} como id<br>
+     * @param id El identificador de la factura, id >= 0
+     * @return
+     * Devuelve una Factura, si no encuentra devuelve una Factura vacia con <code>id = -1</code>
+     */
+    public Factura getFactura(int id){
+        Factura busco = new Factura(id);
+        int index = this.getLFacturas().indexOf(busco);
+        if (index == -1) {
+            busco = new Factura(-1);
+        } else {
+            busco = this.getLFacturas().get(index);
+        }
+        return busco;
+    }
+    
+    
+    public void actualizarStock(Factura f) {
+        ArrayList<ItemVenta> items = f.getItems();
+        Iterator<ItemVenta> it = items.iterator();
+        while (it.hasNext()) {
+            ItemVenta iv = it.next();
+            Libro l = iv.getLibro();
+            int cantidad = iv.getCantidad();
+            int nuevoStock = l.getStock() - cantidad;
+            if (nuevoStock <= 0) {
+                this.eliminarLibro(l);
+            } else {
+                this.getLibro(l.getIsbn()).setStock(nuevoStock);
             }
         }
-        return f;
+    }
+    
+    public void eliminarFactura(Factura f) {
+        this.getLFacturas().remove(f);
+        ArrayList<ItemVenta> items = f.getItems();
+        Iterator<ItemVenta> it = items.iterator();
+        while (it.hasNext()) {
+            ItemVenta iv = it.next();
+            Libro l = iv.getLibro();
+            int cantidad = iv.getCantidad();
+            if (this.existeIsbn(l.getIsbn())) {
+                Libro lExistente = this.getLibro(l.getIsbn());
+                lExistente.setStock(lExistente.getStock() + cantidad);
+            } else {
+                this.addLibro(l);
+            }
+        }
+        setChanged();
+        notifyObservers();
+    }
+    
+    public boolean existeFactura(int id){
+        return this.getLFacturas().contains(new Factura(id));
     }
     
     //  TODO SOBRE GENEROS SELECCIONADOS
@@ -302,15 +371,6 @@ public class Sistema extends java.util.Observable {
         this.LGenerosSeleccionados = new ArrayList<Genero>();
     }
     
-    public String[] nomeandaeltoarray(ArrayList<ItemVenta> a){
-        String[] array=new String[a.size()];
-        int pos=0;
-        for(ItemVenta c: a){
-            array[pos]=c.toString();
-        }
-        return array;
-    }
-    
     //  BORRAR LO DE ABAJO ANTES DE ENTREGAR
     //--------------------------------------------------------------------------
     
@@ -347,12 +407,34 @@ public class Sistema extends java.util.Observable {
         Autor a5 = new Autor("Dr sex","Fachalandia",gs2_3);
         Autor a6 = new Autor("Leproso","Imperio Aleman",gs1_2_3_5);
         Autor a7 = new Autor("MepicanlosCocos","Jamaica",gs5);
-        Libro l1 = new Libro("DRSEX","Aviacion 1",e1,g1,a1,1,1,1);
-        Libro l6 = new Libro("123LOG","Comecactus",e4,g3,a5,1,1,1);
-        Libro l2 = new Libro("KLMNQ","Aviacion 2",e2,g2,a1,1,1,1);
-        Libro l4 = new Libro("MANCE2","Bombinomicon",e3,g1,a4,1,1,1);
-        Libro l5 = new Libro("3JESUS","Zapatos",e3,g5,a6,1,1,1);
-        Libro l3 = new Libro("B1232","Aviacion 3",e3,g1,a1,1,1,1);
+        Libro l1 = new Libro("DRSEX","Aviacion 1",e1,g1,a1,300,222,100);
+        Libro l6 = new Libro("123LOG","Comecactus",e4,g3,a5,200,111,100);
+        Libro l2 = new Libro("KLMNQ","Aviacion 2",e2,g2,a1,100,99,1000);
+        Libro l4 = new Libro("MANCE2","Bombinomicon",e3,g1,a4,rng(),rng(),rng());
+        Libro l5 = new Libro("3JESUS","Zapatos",e3,g5,a6,rng(),rng(),rng());
+        Libro l3 = new Libro("B1232","Aviacion 3",e3,g1,a1,rng(),rng(),rng());
+        ItemVenta iv1 = new ItemVenta(l1,rng());
+        ItemVenta iv2 = new ItemVenta(l2,rng());
+        ItemVenta iv3 = new ItemVenta(l3,rng());
+        ItemVenta iv4 = new ItemVenta(l4,rng());
+        ItemVenta iv5 = new ItemVenta(l5,rng());
+        ArrayList<ItemVenta> ivs1_3_5 = new ArrayList<>();
+        ivs1_3_5.add(iv1);
+        ivs1_3_5.add(iv3);
+        ivs1_3_5.add(iv5);
+        ArrayList<ItemVenta> ivs1_2_4 = new ArrayList<>();
+        ivs1_2_4.add(iv1);
+        ivs1_2_4.add(iv2);
+        ivs1_2_4.add(iv4);
+        ArrayList<ItemVenta> ivs3_4_5 = new ArrayList<>();
+        ivs3_4_5.add(iv3);
+        ivs3_4_5.add(iv4);
+        ivs3_4_5.add(iv5);
+        Factura f1 = new Factura("Atenta2","11/09/2001",ivs1_3_5);
+        Factura f2 = new Factura("Franchesco Virgolini","32/13/2025",ivs1_2_4);
+        Factura f3 = new Factura("El pepe","Ayer",ivs3_4_5);
+        Factura f4 = new Factura("Y Messi, Messi, Messi Y viene Messi","El dia del papu :v",ivs1_3_5);
+        Factura f5 = new Factura("Flint lockwood","31/02/1985",ivs1_2_4);
         this.addEditorial(e1);
         this.addEditorial(e2);
         this.addEditorial(e3);
@@ -375,8 +457,17 @@ public class Sistema extends java.util.Observable {
         this.addLibro(l4);
         this.addLibro(l5);
         this.addLibro(l6);
+        this.addFactura(f1);
+        this.addFactura(f2);
+        this.addFactura(f3);
+        this.addFactura(f4);
+        this.addFactura(f5);
+        System.out.println(this.LFacturas);
     }
     
+    public static int rng() {
+        return (int)(Math.random()*9+1);
+    }
     
     
 }

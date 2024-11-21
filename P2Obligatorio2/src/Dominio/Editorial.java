@@ -9,8 +9,12 @@ public class Editorial {
     private String pais;
     
     public Editorial(String nombre, String pais) {
-        this.setNombre(nombre);
-        this.setPais(pais);
+        this.nombre = nombre;
+        this.pais = pais;
+    }
+    
+    public Editorial(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getNombre() {

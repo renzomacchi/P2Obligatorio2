@@ -8,42 +8,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Factura {
-    public static int ID = 0;
+    private static int ID = 0;
     
     private int num;
     private String cliente;
     private String fecha;
     private ArrayList<ItemVenta> items;
-    private int total;
     
-    public Factura(String cliente, String fecha, ArrayList<ItemVenta> items,int total) {
+    public Factura(String cliente, String fecha, ArrayList<ItemVenta> items) {
         this.num = ID;
         this.cliente = cliente;
         this.fecha = fecha;
         this.items = items;
-        this.total= total;
     }
     
-    public Factura() {
-        this.num = -1;
+    //Constructor de busqueda
+    public Factura(int id) {
+        this.num = id;
         this.cliente = "";
         this.fecha = "";
-        this.items = new ArrayList<ItemVenta>();
-        this.total=0;
+        this.items = new ArrayList<>();
     }
     
-    
-    public int getID(){
-        return this.ID;
-    }
-    /**
-     * Aumenta el ID y lo devuelve
-     * @return 
-     * <code>ID+1</code>
-     */
-    public static int siguienteID() {
-        ID++;
+    public static int getID(){
         return ID;
+    }
+    
+    /**
+     * Aumenta el ID+1
+     */
+    public static void siguienteID() {
+        ID = ID + 1;
     }
 
     public int getNum() {
@@ -77,11 +72,6 @@ public class Factura {
     public ItemVenta getItem(ItemVenta item) {
         return this.getItems().get(this.getItems().indexOf(item));
     }
-    
-    
-    public void setTotal(int n){
-        this.total= n;
-    }
 
     /**
      * Agrega un item a esta factura, si ya existia, aumenta en cantidad
@@ -98,6 +88,10 @@ public class Factura {
         
     }
     
+    /**
+     * Saca un item de esta factura, si hay mas de uno, disminuye en cantidad
+     * @param item 
+     */
     public void eliminarItem(ItemVenta item){
         if(item.getCantidad()==1){
             this.getItems().remove(item);
@@ -111,6 +105,7 @@ public class Factura {
     public boolean existeItem(ItemVenta item) {
         return this.getItems().contains(item);
     }
+    
     
     public int saberTotal(){
         int t = 0;
@@ -136,6 +131,12 @@ public class Factura {
     @Override
     public String toString() {
         return this.cliente+" - "+this.fecha+" - "+this.getNum();
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        Factura f = (Factura)o;
+        return this.getNum() == f.getNum();
     }
     
     

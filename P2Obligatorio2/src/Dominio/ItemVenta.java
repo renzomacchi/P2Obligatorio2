@@ -12,7 +12,7 @@ public class ItemVenta implements Comparable<ItemVenta> {
         this.libro = libro;
         this.cantidad = cantidad;
     }
-
+    
     public int getCantidad() {
         return cantidad;
     }

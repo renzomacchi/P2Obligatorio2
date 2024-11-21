@@ -6,7 +6,6 @@ package Interfaz;
 
 import Dominio.*;
 import java.util.Observable;
-import javax.swing.DefaultListModel;
 
 public class vVentaLibros extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;
@@ -20,7 +19,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         initComponents();
         this.modelo = modelo;
         this.modelo.addObserver(this);
-        this.factura = new Factura();
+        resetearForm();
         objetoAPantalla();
     }
     
@@ -77,7 +76,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Venta de Libros");
+        setTitle("Registrar venta de libros");
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +135,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
 
         jLabel5.setText("Carrito");
 
-        lblPrecioTotal.setText("Total: $0000000");
+        lblPrecioTotal.setText("Total: $0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -150,7 +149,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 32, Short.MAX_VALUE)))
+                        .addGap(0, 62, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -164,7 +163,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 32, Short.MAX_VALUE)))
+                        .addGap(0, 62, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -181,11 +180,11 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 17, Short.MAX_VALUE)
                         .addComponent(btnAgregarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addGap(18, 23, Short.MAX_VALUE)
                         .addComponent(btnEliminarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 5, Short.MAX_VALUE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblPrecioTotal)
@@ -201,8 +200,6 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         lblNum.setText("0");
 
         jLabel2.setText("Fecha");
-
-        txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
         jLabel3.setText("Cliente");
 
@@ -268,6 +265,27 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // TODO add your handling code here:
+        if(this.factura.getItems().isEmpty()){
+            Validate.mensaje("Por favor ingrese algun libro");
+        }
+        else{
+            if(this.factura.totalPosta()!=this.factura.saberTotal()){
+                Validate.mensaje("Se ingreso un libro mas veces de lo que esta en stock, nuevo precio = "+this.factura.totalPosta());
+            }
+            Factura f = new Factura(this.txtCliente.getText(),this.txtFecha.getText(),this.factura.getItems());
+            
+            this.modelo.addFactura(f);
+            this.modelo.actualizarStock(f);
+            resetearForm();
+        }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
         Libro selec = this.listLibros.getSelectedValue();
         if(selec == null) {
@@ -289,34 +307,13 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
         }
     }//GEN-LAST:event_btnEliminarLibroActionPerformed
 
-    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
-        if(this.factura.getItems().isEmpty()){
-            Validate.mensaje("Por favor ingrese algun libro");
-        }
-        else{
-            if(this.factura.totalPosta()!=this.factura.saberTotal()){
-                Validate.mensaje("Se ingreso un libro mas veces de lo que esta en stock, nuevo precio = "+this.factura.totalPosta());
-            }
-            Factura f = new Factura(this.txtCliente.getText(),this.txtFecha.getText(),this.factura.getItems(),this.factura.totalPosta());
-            
-            this.modelo.addFactura(this.factura);
-            for(Factura i : this.modelo.getLFacturas()){
-                System.out.println(i);
-            }
-            lblNum.setText(""+this.factura.siguienteID());
-            this.factura = new Factura();
-            this.txtCliente.setText("");
-            this.txtFecha.setText("");
-            objetoAPantalla();
-         
-        }
-    }//GEN-LAST:event_btnRegistrarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
+    public void resetearForm() {
+        this.lblNum.setText(""+Factura.getID());
+        this.txtCliente.setText("");
+        this.txtFecha.setText("");
+        this.factura = new Factura(-1);
+    }
+    
     /**
      * @param args the command line arguments
      */

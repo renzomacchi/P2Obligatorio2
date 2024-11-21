@@ -25,7 +25,11 @@ public class Libro implements Comparable<Libro> {
         this.pCosto = pcosto;
         this.pVenta = pventa;
         this.stock = stock;
-    } 
+    }
+    
+    public Libro(String isbn) {
+        this.isbn = isbn;
+    }
     
     public String getIsbn() {
         return isbn;
@@ -92,7 +96,7 @@ public class Libro implements Comparable<Libro> {
     
     @Override
     public String toString() {
-        return this.getIsbn() + " - " + this.getTitulo();
+        return this.getStock() + " - " + this.getIsbn() + " - " + this.getTitulo();
     }
     
     @Override
@@ -102,6 +106,12 @@ public class Libro implements Comparable<Libro> {
             dif = this.getIsbn().compareTo(l.getIsbn());
         }
         return dif;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        Libro l = (Libro)o;
+        return this.getIsbn().equals(l.getIsbn());
     }
     
     
