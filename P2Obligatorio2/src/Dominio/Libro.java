@@ -5,6 +5,11 @@
 package Dominio;
 
 import java.io.File;
+import java.util.Arrays;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Libro implements Comparable<Libro> {
     private String isbn;
@@ -92,6 +97,59 @@ public class Libro implements Comparable<Libro> {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+    
+    /**
+     * Devuelve la imagen de este libro, si es que existe
+     * @return 
+     * Imagen del libro, sino devuelve null.
+     */
+    public ImageIcon getImagen(){
+        ImageIcon img = null;
+        String extension = "";
+        //Buscamos la foto. Recorremos las posibles extensiones
+        for (int i = 0; i < ImageIO.getReaderFileSuffixes().length && extension.isEmpty(); i++) {
+            String ext = ImageIO.getReaderFileSuffixes()[i].toLowerCase().trim();
+            File f = new File("img/" + this.getIsbn() + "." + ext);
+            if (f.exists()) {
+                extension = ImageIO.getReaderFileSuffixes()[i];
+            }
+        }
+        if (!extension.isEmpty()) {
+            img = new ImageIcon("img/" + this.getIsbn() + extension);
+        }
+        return img;
+    }
+    
+    /**
+     * PARA TODOS LOS PARAMETROS: Ignora mayusculas y espacios en blanco<code>.toLowerCase().trim()</code><br>
+     * Si este libro cumple al menos una de las siguientes condiciones:
+     * @param autor Si el "this autor nombre" contiene al parametro no vacio
+     * @param genero Si el "this genero nombre" contiene al parametro no vacio
+     * @param titulo Si el "this titulo" contiene al parametro no vacio
+     * @return
+     * True si cumple con 1, 2 o las 3 condiciones
+     */
+    public boolean filtro(String autor, String genero, String titulo) {
+        boolean result = false;
+        if (
+                (
+                    !autor.isBlank() &&
+                    this.getAutor().getNombre().toLowerCase().trim().contains(autor.toLowerCase().trim())
+                ) ||
+                (
+                    !genero.isBlank() &&
+                    this.getGenero().getNombre().toLowerCase().trim().contains(genero.toLowerCase().trim())
+                ) ||
+                (
+                    !titulo.isBlank() && 
+                    this.getTitulo().toLowerCase().trim().contains(titulo.toLowerCase().trim())
+                )
+           ) 
+        {
+            result = true;
+        }
+        return result;
     }
     
     @Override

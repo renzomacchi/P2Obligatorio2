@@ -1,15 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+    Renzo Macchi
+    Santiago Claveré
+*/
 package Interfaz;
 
 import Dominio.*;
-import java.util.*;
-/**
- *
- * @author Usuario
- */
+
 public class vAnularVenta extends javax.swing.JFrame {
     private Sistema modelo;
     private Factura factura;

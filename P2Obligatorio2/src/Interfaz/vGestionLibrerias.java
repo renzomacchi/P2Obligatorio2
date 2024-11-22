@@ -185,7 +185,8 @@ public class vGestionLibrerias extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnularVentaActionPerformed
 
     private void btnConsultaLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaLibrosActionPerformed
-        // TODO add your handling code here:
+        vConsultaLibros cl = new vConsultaLibros(this.modelo);
+        cl.setVisible(true);
     }//GEN-LAST:event_btnConsultaLibrosActionPerformed
 
     private void btnRegistrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAutorActionPerformed

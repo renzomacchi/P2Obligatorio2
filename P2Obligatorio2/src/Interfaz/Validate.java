@@ -1,10 +1,9 @@
 /*
-    Renzo Macchi Gay
+    Renzo Macchi
     Santiago Claveré
 */
 package Interfaz;
 
-import java.text.ParseException;
 import javax.swing.JOptionPane;
 
 /**

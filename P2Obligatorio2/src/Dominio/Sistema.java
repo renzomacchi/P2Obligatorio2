@@ -218,11 +218,32 @@ public class Sistema extends java.util.Observable {
     }
     
     /**
+     * Obtiene todos los libros que cumplan con <br>
+     * <code>miLibro.filtro(genero, titulo, autor)</code>
+     * @param genero
+     * @param titulo
+     * @param autor
+     * @return 
+     * La lista de todos los libros que pasaron el filtro, puede ser vacia.
+     */
+    public ArrayList<Libro> consultarLibros(String autor, String genero, String titulo) {
+        ArrayList<Libro> result = new ArrayList<>();
+        Iterator<Libro> it = this.getLLibros().iterator();
+        while (it.hasNext()) {
+            Libro l = it.next();
+            if (l.filtro(autor,genero,titulo)) {
+                result.add(l);
+            }
+        }
+        return result;
+    }
+    
+    /**
      * Dado un camino y un isbn tomamos la foto en ese camino y la guardamos con nombre <code>isbn</code>
      * <br>
      * Crea una carpeta "img" local (si no existia) y guarda las imagenes ahi
      * @param path
-     * Camino donde se encuentra la foto
+     * Camino donde se encuentra la foto a copiar
      * @param isbn 
      * Identificador unico de la imagen (Isbn)
      */
@@ -462,7 +483,19 @@ public class Sistema extends java.util.Observable {
         this.addFactura(f3);
         this.addFactura(f4);
         this.addFactura(f5);
+        System.out.println("Datos por defecto:");
+        System.out.println("------------------------");
+        System.out.println("Autores:");
+        System.out.println(this.LAutores);
+        System.out.println("Editoriales:");
+        System.out.println(this.LEditoriales);
+        System.out.println("Facturas:");
         System.out.println(this.LFacturas);
+        System.out.println("Generos:");
+        System.out.println(this.LGeneros);
+        System.out.println("Libros:");
+        System.out.println(this.LLibros);
+        System.out.println("------------------------");
     }
     
     public static int rng() {
