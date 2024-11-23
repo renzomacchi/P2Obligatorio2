@@ -116,7 +116,7 @@ public class Libro implements Comparable<Libro> {
             }
         }
         if (!extension.isEmpty()) {
-            img = new ImageIcon("img/" + this.getIsbn() + extension);
+            img = new ImageIcon("img/" + this.getIsbn()+"." + extension);
         }
         return img;
     }
