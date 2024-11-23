@@ -43,7 +43,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
                 nuevo = new JButton(img);
             } else {
             }
-            nuevo.addActionListener(new LibroListener());
+            nuevo.addActionListener(new LibroListener(this.modelo));
             this.panelLibros.add(nuevo);
         }
     }
@@ -213,10 +213,24 @@ public class vConsultaLibros extends javax.swing.JFrame {
 }
 
 class LibroListener implements ActionListener {
+    private Sistema modelo;
     @Override
     public void actionPerformed(ActionEvent e) {
         // este código se ejecutará al presionar el botón, obtengo cuál botón
         JButton cual = ((JButton) e.getSource());
         // código a completar según el botón presionado
+        //consigo el isbn
+        System.out.println(cual.toString());
+        String prueba =cual.toString().split(",")[11].split("/")[1];
+        int n= prueba.lastIndexOf(".");
+        prueba = prueba.substring(0,n);
+        System.out.println(prueba);
+        vVentanaInfo vi= new  vVentanaInfo(this.modelo.getLibro(prueba));
+        vi.setVisible(true);
+        
     }
+    public LibroListener(Sistema s){
+        this.modelo = s;
+    }
+    
 }
