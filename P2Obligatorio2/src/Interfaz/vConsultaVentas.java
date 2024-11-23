@@ -4,10 +4,52 @@
 */
 package Interfaz;
 
-public class vConsultaVentas extends javax.swing.JFrame {
+import Dominio.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Observable;
+import javax.swing.table.DefaultTableModel;
 
+public class vConsultaVentas extends javax.swing.JFrame implements java.util.Observer {
+    private Sistema modelo;
+    
     public vConsultaVentas() {
         initComponents();
+    }
+    
+    public vConsultaVentas(Sistema modelo) {
+        this.modelo = modelo;
+        this.modelo.addObserver(this);
+        initComponents();
+        
+    }
+    
+    public void objetoAPantalla() {
+        //Obtenemos la tabla
+        DefaultTableModel tblModel = (DefaultTableModel)tableFacturas.getModel();
+        //Limpiamos tabla
+        tblModel.setRowCount(0);
+        //Agregamos todos los datos a la tabla
+        String isbn = this.txtIsbn.getText();
+        int recaudado = 0;
+        int vendidos = 0;
+        
+        Libro busqueda = this.modelo.getLibro(isbn);
+        if (!busqueda.getIsbn().isEmpty()) {
+            for (String[] detalle : this.modelo.getLDetalleFacturas(isbn)) {
+                tblModel.addRow(detalle);
+                recaudado += Integer.parseInt(detalle[5]);
+                vendidos += Integer.parseInt(detalle[3]);
+            }
+            this.lblNombreLibro.setText(busqueda.getTitulo());
+        } else {
+            this.lblNombreLibro.setText("...");
+        }
+        int ganancias = recaudado - busqueda.getpCosto()*vendidos;
+        
+        this.lblTotalRecaudado.setText(recaudado+"");
+        this.lblTotalGanancia.setText(ganancias+"");
+        this.lblVendidos.setText(vendidos+"");
     }
 
     /**
@@ -26,7 +68,7 @@ public class vConsultaVentas extends javax.swing.JFrame {
         btnExportar = new javax.swing.JButton();
         lblNombreLibro = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableFacturas = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         lblTotalRecaudado = new javax.swing.JLabel();
@@ -43,41 +85,66 @@ public class vConsultaVentas extends javax.swing.JFrame {
         btnMostrarLibros.setText("...");
 
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnExportar.setText("Exportar");
 
-        lblNombreLibro.setText("nombre de libro");
+        lblNombreLibro.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblNombreLibro.setForeground(new java.awt.Color(0, 0, 255));
+        lblNombreLibro.setText("...");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableFacturas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Fecha", "Cliente", "Factura", "Cantidad", "Precio", "Importe"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tableFacturas);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Total recaudado");
 
+        lblTotalRecaudado.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTotalRecaudado.setForeground(new java.awt.Color(0, 0, 255));
         lblTotalRecaudado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTotalRecaudado.setText("000000");
+        lblTotalRecaudado.setText("0");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Ejemplares vendidos");
 
+        lblVendidos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblVendidos.setForeground(new java.awt.Color(0, 0, 255));
         lblVendidos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblVendidos.setText("000000");
+        lblVendidos.setText("0");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Total ganancia");
 
+        lblTotalGanancia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTotalGanancia.setForeground(new java.awt.Color(0, 0, 255));
         lblTotalGanancia.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTotalGanancia.setText("000000");
+        lblTotalGanancia.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -130,10 +197,10 @@ public class vConsultaVentas extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtIsbn)
+                                .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnMostrarLibros)
-                                .addGap(77, 77, 77)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnConsultar)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnExportar))
@@ -153,14 +220,23 @@ public class vConsultaVentas extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblNombreLibro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        String isbn = this.txtIsbn.getText();
+        if (Validate.esTxtVacio(isbn)) {
+            Validate.mensaje(Validate.TXT_VACIO);
+        } else {
+            objetoAPantalla();
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,11 +286,16 @@ public class vConsultaVentas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblNombreLibro;
     private javax.swing.JLabel lblTotalGanancia;
     private javax.swing.JLabel lblTotalRecaudado;
     private javax.swing.JLabel lblVendidos;
+    private javax.swing.JTable tableFacturas;
     private javax.swing.JTextField txtIsbn;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        objetoAPantalla();
+    }
 }

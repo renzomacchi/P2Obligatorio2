@@ -9,10 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Observable;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
-public class vConsultaLibros extends javax.swing.JFrame {
+public class vConsultaLibros extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;
     private String[] filtro;
     
@@ -26,12 +28,17 @@ public class vConsultaLibros extends javax.swing.JFrame {
     public vConsultaLibros(Sistema modelo) {
         initComponents();
         this.modelo = modelo;
-        this.filtro = new String[3];
+        //Para prevenir que el observer nos lance un NullPointerException
+        //Agregamos un filtro por defecto vacio
+        String[] filtroVacio = {"","",""};
+        this.filtro = filtroVacio;
+        this.modelo.addObserver(this);
     }
     
     public void objetoAPantalla() {
         this.panelLibros.removeAll();
         this.panelLibros.updateUI();
+        //Obtenemos la consulta
         ArrayList<Libro> consulta = this.modelo.consultarLibros(this.filtro[0], this.filtro[1], this.filtro[2]);
         System.out.println("Resultados de la consulta:\n"+consulta);
         int width = (int)((this.panelLibros.getWidth()*0.8)/consulta.size());
@@ -43,12 +50,14 @@ public class vConsultaLibros extends javax.swing.JFrame {
             JButton nuevo = new JButton(l.getIsbn());
             System.out.print(l.getIsbn() + ": ");
             if (img != null) {
-                //Problema al mostrar la foto
                 nuevo = new JButton(img);
             } else {
             }
             nuevo.addActionListener(new LibroListener(l));
             this.panelLibros.add(nuevo);
+        }
+        if (consulta.isEmpty()) {
+            this.panelLibros.add(new JLabel("Ningun libro encontrado",JLabel.CENTER));
         }
     }
 
@@ -216,6 +225,11 @@ public class vConsultaLibros extends javax.swing.JFrame {
     private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        objetoAPantalla();
+    }
 }
 
 class LibroListener implements ActionListener {
@@ -225,7 +239,7 @@ class LibroListener implements ActionListener {
         // este código se ejecutará al presionar el botón, obtengo cuál botón
         JButton cual = ((JButton) e.getSource());
         // código a completar según el botón presionado
-        vDetalleLibro vi= new  vDetalleLibro(this.l);
+        vDetalleLibro vi = new vDetalleLibro(this.l);
         vi.setVisible(true);
     }
     public LibroListener(Libro l){

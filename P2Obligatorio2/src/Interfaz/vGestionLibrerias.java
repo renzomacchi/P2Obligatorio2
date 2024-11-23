@@ -167,7 +167,7 @@ public class vGestionLibrerias extends javax.swing.JFrame {
 
     private void btnConsultaVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaVentasActionPerformed
         //Abrir Ventana para Consultar una Venta
-        vConsultaVentas cv = new vConsultaVentas();
+        vConsultaVentas cv = new vConsultaVentas(this.modelo);
         cv.setVisible(true);
     }//GEN-LAST:event_btnConsultaVentasActionPerformed
 

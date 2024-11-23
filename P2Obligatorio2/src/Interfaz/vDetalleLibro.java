@@ -4,10 +4,11 @@
 */
 package Interfaz;
 import Dominio.*;
+import java.util.Observable;
 
-public class vDetalleLibro extends javax.swing.JFrame {
+public class vDetalleLibro extends javax.swing.JFrame implements java.util.Observer {
 
-    private Libro l;
+    private Libro libroModelo;
     /**
      * Creates new form vVentanaInfo
      */
@@ -16,7 +17,8 @@ public class vDetalleLibro extends javax.swing.JFrame {
     }
     
     public vDetalleLibro(Libro libro){
-        this.l= libro;
+        this.libroModelo = libro;
+        this.libroModelo.addObserver(this);
         initComponents();
         objetoAPantalla();
     }
@@ -182,14 +184,14 @@ public class vDetalleLibro extends javax.swing.JFrame {
         });
     }
     public void objetoAPantalla(){
-        this.setTitle(this.l.getIsbn() + " - " + this.l.getTitulo());
-        this.txtTitulo.setText(this.l.getTitulo());
-        this.txtPCompra.setText(""+this.l.getpCosto());
-        this.txtPVenta.setText(""+this.l.getpVenta());
-        this.txtAutor.setText(this.l.getAutor().toString());
-        this.txtGenero.setText(this.l.getGenero().toString());
-        this.txtStock.setText(""+this.l.getStock());
-        this.txtIsbn.setText(this.l.getIsbn());
+        this.setTitle("Libro: " + this.libroModelo.getIsbn() + " - " + this.libroModelo.getTitulo());
+        this.txtTitulo.setText(this.libroModelo.getTitulo());
+        this.txtPCompra.setText(""+this.libroModelo.getpCosto());
+        this.txtPVenta.setText(""+this.libroModelo.getpVenta());
+        this.txtAutor.setText(this.libroModelo.getAutor().toString());
+        this.txtGenero.setText(this.libroModelo.getGenero().toString());
+        this.txtStock.setText(""+this.libroModelo.getStock());
+        this.txtIsbn.setText(this.libroModelo.getIsbn());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -208,4 +210,9 @@ public class vDetalleLibro extends javax.swing.JFrame {
     private javax.swing.JLabel txtStock;
     private javax.swing.JLabel txtTitulo;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        objetoAPantalla();
+    }
 }

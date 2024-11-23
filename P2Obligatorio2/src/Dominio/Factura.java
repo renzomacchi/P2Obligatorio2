@@ -69,8 +69,45 @@ public class Factura {
         return items;
     }
     
+    /**
+     * Dado un item, devuelve el itemVenta de una factura,
+     * @param item
+     * @return 
+     * Devuelve el item, si no existe deuvelve un item vacio y cantidad -1
+     */
     public ItemVenta getItem(ItemVenta item) {
-        return this.getItems().get(this.getItems().indexOf(item));
+        int index = this.getItems().indexOf(item);
+        ItemVenta result = new ItemVenta(null,-1);
+        if (index != -1) {
+            result = this.getItems().get(index);
+        }
+        return result;
+    }
+    
+    /**
+     * Dado un Item devuelve informacion sobre el item en esa factura<br>
+     * @param item
+     * @return Datos:
+     * <ol>
+     * <li>Fecha</li>
+     * <li>Cliente</li>
+     * <li>Numero (ID factura)</li>
+     * <li>Cantidad del Item en esta factura</li>
+     * <li>Precio por unidad del item (libro) en esta factura</li>
+     * <li>Precio total del item (libro*cantidad) en esta factura</li>
+     * </ol>
+     */
+    public String[] getDetalle(ItemVenta item) {
+        ItemVenta iv = this.getItem(item);
+        String[] detalle = {
+            this.getFecha(),
+            this.getCliente(),
+            this.getNum()+"",
+            iv.getCantidad()+"",
+            iv.getLibro().getpVenta()+"",
+            iv.getCantidad()*iv.getLibro().getpVenta()+""
+        };
+        return detalle;
     }
 
     /**

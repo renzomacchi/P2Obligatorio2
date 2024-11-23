@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Libro implements Comparable<Libro> {
+public class Libro extends java.util.Observable implements Comparable<Libro> {
     private String isbn;
     private String titulo;
     private Editorial editorial;
@@ -98,6 +98,8 @@ public class Libro implements Comparable<Libro> {
 
     public void setStock(int stock) {
         this.stock = stock;
+        setChanged();
+        notifyObservers();
     }
     
     /**

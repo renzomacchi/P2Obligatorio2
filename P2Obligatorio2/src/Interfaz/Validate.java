@@ -53,10 +53,10 @@ public abstract class Validate {
     }
     
     /**
-     * Dado un String devuelve si es un numero mayor estricto a 0;
+     * Dado un String devuelve si es un numero mayor o igual a 0;
      * @param campo
-     * @return False si es un String
-     * False si es un numero n: <code>n <= 0</code>
+     * @return False si es un String<br>
+     * False si es un numero n: <code>n < 0</code>
      */
     public static boolean esEnteroPositivo(String campo) {
         boolean result = true;

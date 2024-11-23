@@ -239,6 +239,29 @@ public class Sistema extends java.util.Observable {
     }
     
     /**
+     * Busca facturas que contenga items de libros con <code>isbn</code>
+     * @param isbn
+     * @return 
+     * Devuelve una lista en el que cada elemento es un detalle de la factura<br>
+     * Cada detalle es un String[] y se obtiene de la funcion <code>miFactura.getDetalle(isbn)</code><br>
+     * Puede devolver una lista vacia<br>
+     * String[] = {Fecha, Cliente, Numero, Cantidad, Precio, Importe}
+     */
+    public ArrayList<String[]> getLDetalleFacturas(String isbn) {
+        ArrayList<String[]> result = new ArrayList<>();
+        ItemVenta busqueda = new ItemVenta(new Libro(isbn),0);
+        Iterator<Factura> it = this.getLFacturas().iterator();
+        while (it.hasNext()) {
+            Factura fac = it.next();
+            if (fac.existeItem(busqueda)) {
+                result.add(fac.getDetalle(busqueda));
+                System.out.println(Arrays.toString(fac.getDetalle(busqueda)));
+            }
+        }
+        return result;
+    }
+    
+    /**
      * Dado un camino y un isbn tomamos la foto en ese camino y la guardamos con nombre <code>isbn</code>
      * <br>
      * Crea una carpeta "img" local (si no existia) y guarda las imagenes ahi
@@ -306,6 +329,7 @@ public class Sistema extends java.util.Observable {
         }
         return busco;
     }
+    
     
     
     public void actualizarStock(Factura f) {
@@ -435,27 +459,45 @@ public class Sistema extends java.util.Observable {
         Libro l5 = new Libro("3JESUS","Zapatos",e3,g5,a6,rng(),rng(),rng());
         Libro l3 = new Libro("B1232","Aviacion 3",e3,g1,a1,rng(),rng(),rng());
         ItemVenta iv1 = new ItemVenta(l1,rng());
+        ItemVenta iv1_ = new ItemVenta(l1,rng());
+        ItemVenta iv1__ = new ItemVenta(l1,rng());
+        ItemVenta iv1___ = new ItemVenta(l1,rng());
         ItemVenta iv2 = new ItemVenta(l2,rng());
+        ItemVenta iv2_ = new ItemVenta(l2,rng());
         ItemVenta iv3 = new ItemVenta(l3,rng());
+        ItemVenta iv3_ = new ItemVenta(l3,rng());
+        ItemVenta iv3__ = new ItemVenta(l3,rng());
         ItemVenta iv4 = new ItemVenta(l4,rng());
+        ItemVenta iv4_ = new ItemVenta(l4,rng());
+        ItemVenta iv4__ = new ItemVenta(l4,rng());
         ItemVenta iv5 = new ItemVenta(l5,rng());
+        ItemVenta iv5_ = new ItemVenta(l5,rng());
+        ItemVenta iv5__ = new ItemVenta(l5,rng());
         ArrayList<ItemVenta> ivs1_3_5 = new ArrayList<>();
         ivs1_3_5.add(iv1);
         ivs1_3_5.add(iv3);
         ivs1_3_5.add(iv5);
+        ArrayList<ItemVenta> ivs1_3_5_ = new ArrayList<>();
+        ivs1_3_5_.add(iv1__);
+        ivs1_3_5_.add(iv3__);
+        ivs1_3_5_.add(iv5__);
         ArrayList<ItemVenta> ivs1_2_4 = new ArrayList<>();
-        ivs1_2_4.add(iv1);
+        ivs1_2_4.add(iv1_);
         ivs1_2_4.add(iv2);
         ivs1_2_4.add(iv4);
+        ArrayList<ItemVenta> ivs1_2_4_ = new ArrayList<>();
+        ivs1_2_4_.add(iv1___);
+        ivs1_2_4_.add(iv2_);
+        ivs1_2_4_.add(iv4__);
         ArrayList<ItemVenta> ivs3_4_5 = new ArrayList<>();
-        ivs3_4_5.add(iv3);
-        ivs3_4_5.add(iv4);
-        ivs3_4_5.add(iv5);
+        ivs3_4_5.add(iv3_);
+        ivs3_4_5.add(iv4_);
+        ivs3_4_5.add(iv5_);
         Factura f1 = new Factura("Atenta2","11/09/2001",ivs1_3_5);
         Factura f2 = new Factura("Franchesco Virgolini","32/13/2025",ivs1_2_4);
-        Factura f3 = new Factura("El pepe","Ayer",ivs3_4_5);
-        Factura f4 = new Factura("Y Messi, Messi, Messi Y viene Messi","El dia del papu :v",ivs1_3_5);
-        Factura f5 = new Factura("Flint lockwood","31/02/1985",ivs1_2_4);
+        Factura f3 = new Factura("El pepe","A/y/er",ivs3_4_5);
+        Factura f4 = new Factura("Y Messi, Messi, Messi Y viene Messi","f/ra/ca",ivs1_3_5_);
+        Factura f5 = new Factura("Flint lockwood","31/02/1985",ivs1_2_4_);
         this.addEditorial(e1);
         this.addEditorial(e2);
         this.addEditorial(e3);
@@ -499,7 +541,7 @@ public class Sistema extends java.util.Observable {
     }
     
     public static int rng() {
-        return (int)(Math.random()*9+1);
+        return (int)(Math.random()*50+1);
     }
     
     
