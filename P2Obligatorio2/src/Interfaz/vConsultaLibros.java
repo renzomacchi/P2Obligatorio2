@@ -7,6 +7,7 @@ package Interfaz;
 import Dominio.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,13 +30,16 @@ public class vConsultaLibros extends javax.swing.JFrame {
     }
     
     public void objetoAPantalla() {
-        System.out.println("Resultados de la consulta:\n"+this.modelo.consultarLibros(this.filtro[0], this.filtro[1], this.filtro[2]));
         this.panelLibros.removeAll();
         this.panelLibros.updateUI();
-        Iterator<Libro> it = this.modelo.consultarLibros(this.filtro[0], this.filtro[1], this.filtro[2]).iterator();
+        ArrayList<Libro> consulta = this.modelo.consultarLibros(this.filtro[0], this.filtro[1], this.filtro[2]);
+        System.out.println("Resultados de la consulta:\n"+consulta);
+        int width = (int)((this.panelLibros.getWidth()*0.8)/consulta.size());
+        int height = (int)(this.panelLibros.getHeight()*0.8);
+        Iterator<Libro> it = consulta.iterator();
         while(it.hasNext()) {
             Libro l = it.next();
-            ImageIcon img = l.getImagen(150,150);
+            ImageIcon img = l.getImagen(width,height);
             JButton nuevo = new JButton(l.getIsbn());
             System.out.print(l.getIsbn() + ": ");
             if (img != null) {
@@ -117,6 +121,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
         );
 
         panelLibros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelLibros.setMinimumSize(new java.awt.Dimension(100, 100));
         panelLibros.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -130,7 +135,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnConsultar)
-                        .addGap(0, 308, Short.MAX_VALUE))
+                        .addGap(0, 363, Short.MAX_VALUE))
                     .addComponent(panelLibros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
