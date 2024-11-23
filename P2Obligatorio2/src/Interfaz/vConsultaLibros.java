@@ -35,7 +35,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
         Iterator<Libro> it = this.modelo.consultarLibros(this.filtro[0], this.filtro[1], this.filtro[2]).iterator();
         while(it.hasNext()) {
             Libro l = it.next();
-            ImageIcon img = l.getImagen();
+            ImageIcon img = l.getImagen(150,150);
             JButton nuevo = new JButton(l.getIsbn());
             System.out.print(l.getIsbn() + ": ");
             if (img != null) {
@@ -68,6 +68,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
         panelLibros = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Consulta de libros");
 
         btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -116,7 +117,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
         );
 
         panelLibros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        panelLibros.setLayout(new java.awt.GridLayout());
+        panelLibros.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,7 +130,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnConsultar)
-                        .addGap(0, 276, Short.MAX_VALUE))
+                        .addGap(0, 308, Short.MAX_VALUE))
                     .addComponent(panelLibros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -141,7 +142,7 @@ public class vConsultaLibros extends javax.swing.JFrame {
                     .addComponent(btnConsultar)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelLibros, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                .addComponent(panelLibros, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -219,14 +220,8 @@ class LibroListener implements ActionListener {
         // este código se ejecutará al presionar el botón, obtengo cuál botón
         JButton cual = ((JButton) e.getSource());
         // código a completar según el botón presionado
-        //consigo el isbn
-       // System.out.println(cual.toString());
-        //String prueba =cual.toString().split(",")[11].split("/")[1];
-      //  int n= prueba.lastIndexOf(".");
-       // System.out.println(prueba);
-        vVentanaInfo vi= new  vVentanaInfo(this.l);
+        vDetalleLibro vi= new  vDetalleLibro(this.l);
         vi.setVisible(true);
-        
     }
     public LibroListener(Libro l){
         this.l = l;

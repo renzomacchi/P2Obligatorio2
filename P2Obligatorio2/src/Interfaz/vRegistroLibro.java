@@ -357,11 +357,10 @@ public class vRegistroLibro extends javax.swing.JFrame implements java.util.Obse
             this.lblDisplayFoto.setText("");
             this.btnCargarFoto.setText(this.jFileChooser1.getSelectedFile().getName());
             ImageIcon imIco = new ImageIcon(camino);
-            Image img = imIco.getImage();
-            Image imgScale = img.getScaledInstance(this.lblDisplayFoto.getWidth(), this.lblDisplayFoto.getHeight(), 100);
-            ImageIcon imScaled = new ImageIcon(imgScale);
+            Image imgScale = imIco.getImage().getScaledInstance(this.lblDisplayFoto.getWidth(), this.lblDisplayFoto.getHeight(), 100);
+            ImageIcon imIcoScaled = new ImageIcon(imgScale);
             //Lo mostramos en el label
-            this.lblDisplayFoto.setIcon(imScaled);
+            this.lblDisplayFoto.setIcon(imIcoScaled);
             
         } else if (result == JFileChooser.CANCEL_OPTION) {
             //Si el usuario cancelo, no hacermos nada. (se cierra autormaticamente)

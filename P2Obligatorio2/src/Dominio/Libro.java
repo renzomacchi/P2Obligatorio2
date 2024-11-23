@@ -4,6 +4,7 @@
 */
 package Dominio;
 
+import java.awt.Image;
 import java.io.File;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
@@ -100,12 +101,15 @@ public class Libro implements Comparable<Libro> {
     }
     
     /**
-     * Devuelve la imagen de este libro, si es que existe
+     * Devuelve la imagen de este libro, si es que existe<br>
+     * Si se quiere mantener el tamanio, pasar parametros <code>.getImagen(-1,-1)</code>
+     * @param width Ancho de la imagen en px
+     * @param height Alto de la imagen en px
      * @return 
      * Imagen del libro, sino devuelve null.
      */
-    public ImageIcon getImagen(){
-        ImageIcon img = null;
+    public ImageIcon getImagen(int width, int height){
+        ImageIcon imgIco = null;
         String extension = "";
         //Buscamos la foto. Recorremos las posibles extensiones
         for (int i = 0; i < ImageIO.getReaderFileSuffixes().length && extension.isEmpty(); i++) {
@@ -116,9 +120,11 @@ public class Libro implements Comparable<Libro> {
             }
         }
         if (!extension.isEmpty()) {
-            img = new ImageIcon("img/" + this.getIsbn()+"." + extension);
+            imgIco = new ImageIcon("img/" + this.getIsbn()+"." + extension);
+            //Le cambio el tamanio
+            imgIco = new ImageIcon(imgIco.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
         }
-        return img;
+        return imgIco;
     }
     
     /**
