@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.*;
 import java.io.IOException;
+import LecturaEscrituraArchivos.*;
 
 public class Sistema extends java.util.Observable {
     private ArrayList<Editorial> LEditoriales;
@@ -247,6 +248,9 @@ public class Sistema extends java.util.Observable {
      * Puede devolver una lista vacia<br>
      * String[] = {Fecha, Cliente, Numero, Cantidad, Precio, Importe}
      */
+    
+  
+    
     public ArrayList<String[]> getLDetalleFacturas(String isbn) {
         ArrayList<String[]> result = new ArrayList<>();
         ItemVenta busqueda = new ItemVenta(new Libro(isbn),0);
