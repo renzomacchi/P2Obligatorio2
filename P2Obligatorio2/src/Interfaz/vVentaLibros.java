@@ -268,11 +268,11 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         // TODO add your handling code here:
         if(this.factura.getItems().isEmpty()){
-            Validate.mensaje("Por favor ingrese algun libro");
+            Validate.mensaje(Validate.FACTURA_SIN_ITEMS);
         }
         else{
             if(this.factura.totalPosta()!=this.factura.saberTotal()){
-                Validate.mensaje("Se ingreso un libro mas veces de lo que esta en stock, nuevo precio = "+this.factura.totalPosta());
+                Validate.mensaje("Se ingreso un libro mas veces de lo que esta en stock.\nNuevo precio: $"+this.factura.totalPosta());
             }
             Factura f = new Factura(this.txtCliente.getText(),this.txtFecha.getText(),this.factura.getItems());
             

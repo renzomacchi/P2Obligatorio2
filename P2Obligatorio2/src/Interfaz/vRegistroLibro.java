@@ -331,7 +331,7 @@ public class vRegistroLibro extends javax.swing.JFrame implements java.util.Obse
                 Libro l = new Libro(campos[0],campos[1],ediSelec,genSelec,autSelec,precioC,precioV,stock);
                 this.modelo.addLibro(l);
                 resetearForm();
-                Validate.mensaje("Libro registrado correctamente");
+                Validate.mensaje(Validate.LIBRO_REGISTRADO);
             }
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed

@@ -349,7 +349,7 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         TableModel tabla = this.tableFacturas.getModel();
         if (tabla.getRowCount() == 0) {
-            Validate.mensaje("No hay datos cargados en la tabla");
+            Validate.mensaje(Validate.TABLA_VACIA);
         } else {
             ArchivoGrabacion archivo = new ArchivoGrabacion("VENTAS.CSV");
             
@@ -373,7 +373,7 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
                 archivo.grabarLinea(fila);
             }
             archivo.cerrar();
-            Validate.mensaje("Datos exportados con exito");
+            Validate.mensaje(Validate.TABLA_EXPORTADA);
         }
     }//GEN-LAST:event_btnExportarActionPerformed
 

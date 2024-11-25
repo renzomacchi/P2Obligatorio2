@@ -23,10 +23,10 @@ public class vGestionLibrerias extends javax.swing.JFrame {
             try {
                 this.modelo = Sistema.cargar();
             } catch (IOException ex) {
-                Validate.mensaje("Hubo un error al cargar los datos");
+                Validate.mensaje(Validate.CARGAR_SISTEMA_ERROR);
                 System.out.println("IOException:\n"+ex);
             } catch (ClassNotFoundException ex) {
-                Validate.mensaje("Hubo un error al cargar los datos");
+                Validate.mensaje(Validate.CARGAR_SISTEMA_ERROR);
                 System.out.println("ClassNotFoundException:\n"+ex);
             }
         }

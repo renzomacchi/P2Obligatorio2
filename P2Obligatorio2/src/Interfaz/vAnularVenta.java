@@ -157,7 +157,7 @@ public class vAnularVenta extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here
         if(Validate.esTxtVacio(this.txtId.getText())){
-            Validate.mensaje("Ingrese un id");
+            Validate.mensaje(Validate.ID_VACIO);
         }
         else{
             if(Validate.esEnteroPositivo(this.txtId.getText())){
@@ -167,18 +167,18 @@ public class vAnularVenta extends javax.swing.JFrame {
                     objetoAPantalla();
                 }
                 else{
-                    Validate.mensaje("No existe ese id");
+                    Validate.mensaje(Validate.ID_NO_EXISTE);
                 }
             }
             else{
-                Validate.mensaje("Ingrese un id valido");
+                Validate.mensaje(Validate.ID_INVALIDO);
             }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void BorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BorrarActionPerformed
         if (this.factura == null) {
-            Validate.mensaje("Busque un ID valido para borrar");
+            Validate.mensaje(Validate.ID_NO_EXISTE_BORRAR);
         } else {
             this.modelo.eliminarFactura(this.factura);
             Validate.mensaje("Se ha borrado con exito");

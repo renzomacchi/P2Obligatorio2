@@ -320,7 +320,7 @@ public class Sistema extends java.util.Observable implements java.io.Serializabl
             out.close();
         }
         catch(IOException e) {
-                Validate.mensaje("Hubo un error al intentar guardar la foto.");
+                Validate.mensaje(Validate.SISTEMA_GUARDADO_ERROR);
                 System.err.println(e);
         }
     }

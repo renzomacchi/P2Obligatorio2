@@ -172,7 +172,7 @@ public class vConsultaLibros extends javax.swing.JFrame implements java.util.Obs
             this.filtro[2] = titulo;
             objetoAPantalla();
         } else {
-            Validate.mensaje("Debe ingresar al menos un criterio de busqueda.");
+            Validate.mensaje(Validate.CRITERIO_VACIO);
         }
         
     }//GEN-LAST:event_btnConsultarActionPerformed
