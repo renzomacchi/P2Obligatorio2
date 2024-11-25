@@ -5,10 +5,10 @@
 package Interfaz;
 
 import Dominio.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import LecturaEscrituraArchivos.*;
 import java.util.Observable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class vConsultaVentas extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;
@@ -198,7 +198,7 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
                     .addComponent(lblTotalRecaudado)
                     .addComponent(lblVendidos)
                     .addComponent(lblTotalGanancia))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         lblNombreLibro.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -215,21 +215,21 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblNombreLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lblNombreLibro)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnMostrarLibros)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnConsultar)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnExportar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnMostrarLibros)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnConsultar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                                .addComponent(btnExportar)))
+                        .addGap(3, 3, 3)))
                 .addGap(32, 32, 32))
         );
         jPanel2Layout.setVerticalGroup(
@@ -245,10 +245,10 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblNombreLibro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addContainerGap())
         );
 
         lIsbn.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -288,35 +288,31 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
                 .addContainerGap())
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                    .addGap(0, 297, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(297, 297, 297)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 23, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addGap(1, 1, 1))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(28, Short.MAX_VALUE)))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLayeredPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLayeredPane1)
-                .addContainerGap())
+            .addComponent(jLayeredPane1)
         );
 
         pack();
@@ -356,7 +352,34 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
     }//GEN-LAST:event_lIsbnValueChanged
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        // TODO add your handling code here
+        TableModel tabla = this.tableFacturas.getModel();
+        if (tabla.getRowCount() == 0) {
+            Validate.mensaje("No hay datos cargados en la tabla");
+        } else {
+            ArchivoGrabacion archivo = new ArchivoGrabacion("VENTAS.CSV");
+            
+            //Obtenemos los titulos
+            String titulos = "";
+            for(int i = 0; i < tabla.getColumnCount(); i++) {
+                titulos += tabla.getColumnName(i) + ";";
+            }
+            //Borrar el ultimo ";"
+            titulos = titulos.substring(0, titulos.length()-1);
+            archivo.grabarLinea(titulos);
+            
+            //Obtenemos los datos
+            for(int i = 0; i < tabla.getRowCount(); i++) {
+                String fila = "";
+                for(int j = 0; j < tabla.getColumnCount(); j++) {
+                    fila += tabla.getValueAt(i, j) + ";";
+                }
+                //Borrar el ultimo ";"
+                fila = fila.substring(0, fila.length()-1);
+                archivo.grabarLinea(fila);
+            }
+            archivo.cerrar();
+            Validate.mensaje("Datos exportados con exito");
+        }
     }//GEN-LAST:event_btnExportarActionPerformed
 
     /**
@@ -402,34 +425,20 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnMostrarLibros;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<Libro> lIsbn;
     private javax.swing.JLabel lblNombreLibro;
     private javax.swing.JLabel lblTotalGanancia;
-    private javax.swing.JLabel lblTotalGanancia1;
-    private javax.swing.JLabel lblTotalGanancia2;
     private javax.swing.JLabel lblTotalRecaudado;
-    private javax.swing.JLabel lblTotalRecaudado1;
-    private javax.swing.JLabel lblTotalRecaudado2;
     private javax.swing.JLabel lblVendidos;
-    private javax.swing.JLabel lblVendidos1;
-    private javax.swing.JLabel lblVendidos2;
     private javax.swing.JTable tableFacturas;
     private javax.swing.JTextField txtIsbn;
     // End of variables declaration//GEN-END:variables
