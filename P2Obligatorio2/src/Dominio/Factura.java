@@ -143,7 +143,7 @@ public class Factura implements java.io.Serializable {
         int t= 0;
         for(ItemVenta i: this.items){
             if(i.getCantidad()>i.getLibro().getStock()){
-                t+=i.getLibro().getStock();
+                t+=i.getLibro().getStock()*i.getLibro().getpVenta();
             }
             else{
             t+=i.getLibro().getpVenta()*i.getCantidad();
