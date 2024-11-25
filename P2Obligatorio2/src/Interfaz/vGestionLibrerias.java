@@ -5,6 +5,9 @@
 package Interfaz;
 
 import Dominio.Sistema;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 
 public class vGestionLibrerias extends javax.swing.JFrame {
     private Sistema modelo;
@@ -15,7 +18,20 @@ public class vGestionLibrerias extends javax.swing.JFrame {
     
     public vGestionLibrerias(Sistema modelo) {
         this.modelo = modelo;
+        
+        if (Validate.darOpcion("Desea cargar datos de la ultima sesion?","Cargar sistema previo")) {
+            try {
+                this.modelo = Sistema.cargar();
+            } catch (IOException ex) {
+                Validate.mensaje("Hubo un error al cargar los datos");
+                System.out.println("IOException:\n"+ex);
+            } catch (ClassNotFoundException ex) {
+                Validate.mensaje("Hubo un error al cargar los datos");
+                System.out.println("ClassNotFoundException:\n"+ex);
+            }
+        }
         initComponents();
+        this.addWindowListener(new miWindowListener(this.modelo));
     }
 
     /**
@@ -136,11 +152,11 @@ public class vGestionLibrerias extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 550, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 177, Short.MAX_VALUE)
         );
 
         pack();
@@ -251,4 +267,38 @@ public class vGestionLibrerias extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     // End of variables declaration//GEN-END:variables
 
+}
+
+class miWindowListener implements WindowListener {
+    private Sistema modelo;
+    
+    public miWindowListener(Sistema modelo) {
+        this.modelo = modelo;
+    }
+    
+    @Override
+    public void windowClosing(WindowEvent e) {
+        try {
+            modelo.guardar();
+        } catch (IOException ex) {
+            Validate.mensaje("Hubo un error al guardar el sistema");
+        }
+        
+    }
+            
+    //Overrides necesarios para no tener problemas.
+    // <editor-fold defaultstate="collapsed" desc="Funciones Necesarias">
+    @Override
+    public void windowOpened(WindowEvent e) {}
+    @Override
+    public void windowClosed(WindowEvent e) {}
+    @Override
+    public void windowIconified(WindowEvent e) {}
+    @Override
+    public void windowDeiconified(WindowEvent e) {}
+    @Override
+    public void windowActivated(WindowEvent e) {}
+    @Override
+    public void windowDeactivated(WindowEvent e) {}
+    //</editor-fold>
 }

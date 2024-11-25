@@ -4,7 +4,7 @@
 */
 package Dominio;
 
-public class ItemVenta implements Comparable<ItemVenta> {
+public class ItemVenta implements Comparable<ItemVenta>, java.io.Serializable {
     private Libro libro;
     private int cantidad;
 

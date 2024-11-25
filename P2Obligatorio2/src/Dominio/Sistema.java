@@ -11,8 +11,10 @@ import java.io.FileOutputStream;
 import java.util.*;
 import java.io.IOException;
 import LecturaEscrituraArchivos.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-public class Sistema extends java.util.Observable {
+public class Sistema extends java.util.Observable implements java.io.Serializable {
     private ArrayList<Editorial> LEditoriales;
     private ArrayList<Genero> LGeneros;
     private ArrayList<Autor> LAutores;
@@ -29,6 +31,27 @@ public class Sistema extends java.util.Observable {
         this.LGenerosSeleccionados = new ArrayList<>();
         this.cargarDatos();
     }
+    
+    //  SISTEMA
+    //--------------------------------------------------------------------------
+    public void guardar() throws IOException {
+        //Intenta guardar el programa
+        ObjectOutputStream out = new ObjectOutputStream(
+            new FileOutputStream("sistema")
+        );
+        out.writeObject(this);
+        out.close();
+    }
+    
+    public static Sistema cargar() throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(
+            new FileInputStream("sistema")
+        );
+        Sistema modelo = (Sistema)in.readObject();
+        in.close();
+        return modelo;
+    }
+    
 
     //  TODO SOBRE EDITORIALES
     //--------------------------------------------------------------------------
@@ -259,7 +282,6 @@ public class Sistema extends java.util.Observable {
             Factura fac = it.next();
             if (fac.existeItem(busqueda)) {
                 result.add(fac.getDetalle(busqueda));
-                System.out.println(Arrays.toString(fac.getDetalle(busqueda)));
             }
         }
         return result;

@@ -30,6 +30,15 @@ public abstract class Validate {
         JOptionPane.showMessageDialog(null, mensaje);
     }
     
+    public static boolean darOpcion(String mensaje, String titulo) {
+        int result = JOptionPane.showConfirmDialog(null, mensaje, titulo, JOptionPane.YES_NO_OPTION);
+        boolean ok = false;
+        if (result == 0) {
+            ok = true;
+        }
+        return ok;
+    }
+    
     /**
      * Dado un array de Strings, checkea que cada string no este vacio.
      * @param campos

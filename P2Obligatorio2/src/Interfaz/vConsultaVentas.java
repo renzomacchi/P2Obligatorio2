@@ -337,16 +337,11 @@ public class vConsultaVentas extends javax.swing.JFrame implements java.util.Obs
     private void lIsbnValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lIsbnValueChanged
         // TODO add your handling code here:
         if(this.btnApretado){
-            String s=this.lIsbn.getSelectedValue().toString();
-            System.out.println(s);
-            this.txtIsbn.setText(this.lIsbn.getSelectedValue().toString().split(" - ")[1]);
-            //
+            this.txtIsbn.setText(this.lIsbn.getSelectedValue().getIsbn());
+            
             this.btnApretado=!this.btnApretado;
             jPanel5.setVisible(this.btnApretado);
             objetoAPantalla();
-        }
-        else{
-            System.out.println("caca");
         }
         
     }//GEN-LAST:event_lIsbnValueChanged

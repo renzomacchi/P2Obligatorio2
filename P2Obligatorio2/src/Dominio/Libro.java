@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Libro extends java.util.Observable implements Comparable<Libro> {
+public class Libro extends java.util.Observable implements Comparable<Libro>, java.io.Serializable   {
     private String isbn;
     private String titulo;
     private Editorial editorial;

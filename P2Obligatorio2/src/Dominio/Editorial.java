@@ -4,7 +4,7 @@
 */
 package Dominio;
 
-public class Editorial {
+public class Editorial implements java.io.Serializable{
     private String nombre;
     private String pais;
     

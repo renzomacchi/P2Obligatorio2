@@ -7,7 +7,7 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Factura {
+public class Factura implements java.io.Serializable {
     private static int ID = 0;
     
     private int num;

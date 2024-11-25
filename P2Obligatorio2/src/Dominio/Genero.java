@@ -4,7 +4,7 @@
 */
 package Dominio;
 
-public class Genero {
+public class Genero implements java.io.Serializable {
     private String nombre;
     private String desc;
 

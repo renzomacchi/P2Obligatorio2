@@ -40,7 +40,6 @@ public class vConsultaLibros extends javax.swing.JFrame implements java.util.Obs
         this.panelLibros.updateUI();
         //Obtenemos la consulta
         ArrayList<Libro> consulta = this.modelo.consultarLibros(this.filtro[0], this.filtro[1], this.filtro[2]);
-        System.out.println("Resultados de la consulta:\n"+consulta);
         int width = (int)((this.panelLibros.getWidth()*0.8)/consulta.size());
         int height = (int)(this.panelLibros.getHeight()*0.8);
         Iterator<Libro> it = consulta.iterator();
@@ -48,7 +47,6 @@ public class vConsultaLibros extends javax.swing.JFrame implements java.util.Obs
             Libro l = it.next();
             ImageIcon img = l.getImagen(width,height);
             JButton nuevo = new JButton(l.getIsbn());
-            System.out.print(l.getIsbn() + ": ");
             if (img != null) {
                 nuevo = new JButton(img);
             } else {

@@ -7,7 +7,7 @@ package Dominio;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Autor {
+public class Autor implements java.io.Serializable{
     private String nombre;
     private String nacionalidad;
     private ArrayList<Genero> generos;
