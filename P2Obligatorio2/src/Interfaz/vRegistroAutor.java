@@ -6,7 +6,6 @@ package Interfaz;
 import Dominio.*;
 import java.util.ArrayList;
 import java.util.Observable;
-import javax.swing.DefaultListModel;
 public class vRegistroAutor extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;
     

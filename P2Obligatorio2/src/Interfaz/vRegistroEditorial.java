@@ -6,7 +6,6 @@ package Interfaz;
 
 import Dominio.*;
 import java.util.Observable;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
     public class vRegistroEditorial extends javax.swing.JFrame implements java.util.Observer {

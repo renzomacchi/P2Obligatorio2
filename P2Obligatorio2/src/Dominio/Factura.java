@@ -8,15 +8,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Factura implements java.io.Serializable {
-    private static int ID = 0;
-    
     private int num;
     private String cliente;
     private String fecha;
     private ArrayList<ItemVenta> items;
     
-    public Factura(String cliente, String fecha, ArrayList<ItemVenta> items) {
-        this.num = ID;
+    public Factura(int id, String cliente, String fecha, ArrayList<ItemVenta> items) {
+        this.num = id;
         this.cliente = cliente;
         this.fecha = fecha;
         this.items = items;
@@ -28,17 +26,6 @@ public class Factura implements java.io.Serializable {
         this.cliente = "";
         this.fecha = "";
         this.items = new ArrayList<>();
-    }
-    
-    public static int getID(){
-        return ID;
-    }
-    
-    /**
-     * Aumenta el ID+1
-     */
-    public static void siguienteID() {
-        ID = ID + 1;
     }
 
     public int getNum() {

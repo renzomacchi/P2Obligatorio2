@@ -24,7 +24,7 @@ public abstract class Validate {
     public final static String GENERO_REPETIDO = "Ya se ha ingresado un Genero con ese nombre";
     public final static String GENERO_SELECCION_VACIA = "Seleccione al menos un Genero";
     public final static String GUARDAR_SISTEMA_ERROR = "Hubo un error al guardar el sistema";
-    public final static String ID_BORRARADO = "Se ha borrado con exito";
+    public final static String ID_BORRADO = "Se ha borrado con exito";
     public final static String ID_INVALIDO = "Ingrese un id valido";
     public final static String ID_NO_EXISTE = "No existe ese id";
     public final static String ID_NO_EXISTE_BORRAR = "Busque un ID valido para borrar";
@@ -33,7 +33,7 @@ public abstract class Validate {
     public final static String ITEM_VENTA_NO_SELECCIONADO = "Seleccione un item de su carrito";
     public final static String LIBRO_NO_SELECCIONADO = "Seleccione un Libro";
     public final static String LIBRO_REGISTRADO = "Libro registrado correctamente";
-    public final static String SISTEMA_GUARDADO_ERROR = "Hubo un error al intentar guardar la foto.";
+    public final static String FOTO_GUARDADO_ERROR = "Hubo un error al intentar guardar la foto.";
     public final static String TABLA_EXPORTADA = "Datos exportados con exito";
     public final static String TABLA_VACIA = "No hay datos cargados en la tabla";
     public final static String TXT_NO_NRO_POSITIVO = "Debe ingresar numeros enteros mayores a 0";

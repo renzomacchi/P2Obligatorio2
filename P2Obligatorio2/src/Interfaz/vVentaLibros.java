@@ -25,7 +25,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
     
     public void objetoAPantalla() {
         //Actualizamos la lista de libros
-        this.listLibros.setListData(this.modelo.getLLibros().toArray(new Libro[this.modelo.getLLibros().size()]));
+        this.listLibros.setListData(this.modelo.getLLibrosConStock().toArray(new Libro[this.modelo.getLLibrosConStock().size()]));
         this.listVenta.setListData(this.factura.getItems().toArray(new ItemVenta[this.factura.getItems().size()]));
         this.lblPrecioTotal.setText("Total: $"+ this.factura.saberTotal());
     }
@@ -274,11 +274,12 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
             if(this.factura.totalPosta()!=this.factura.saberTotal()){
                 Validate.mensaje("Se ingreso un libro mas veces de lo que esta en stock.\nNuevo precio: $"+this.factura.totalPosta());
             }
-            Factura f = new Factura(this.txtCliente.getText(),this.txtFecha.getText(),this.factura.getItems());
+            Factura f = new Factura(this.modelo.getFacturaID(),this.txtCliente.getText(),this.txtFecha.getText(),this.factura.getItems());
             
             this.modelo.addFactura(f);
             this.modelo.actualizarStock(f);
             resetearForm();
+            objetoAPantalla();
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
@@ -308,7 +309,7 @@ public class vVentaLibros extends javax.swing.JFrame implements java.util.Observ
     }//GEN-LAST:event_btnEliminarLibroActionPerformed
 
     public void resetearForm() {
-        this.lblNum.setText(""+Factura.getID());
+        this.lblNum.setText(""+this.modelo.getFacturaID());
         this.txtCliente.setText("");
         this.txtFecha.setText("");
         this.factura = new Factura(-1);

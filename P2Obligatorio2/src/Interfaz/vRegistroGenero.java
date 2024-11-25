@@ -4,12 +4,8 @@
 */
 package Interfaz;
 
-import Dominio.Editorial;
-import Dominio.Genero;
-import Dominio.Sistema;
+import Dominio.*;
 import java.util.Observable;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class vRegistroGenero extends javax.swing.JFrame implements java.util.Observer {
     private Sistema modelo;

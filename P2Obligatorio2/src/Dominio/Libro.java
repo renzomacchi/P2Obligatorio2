@@ -6,11 +6,8 @@ package Dominio;
 
 import java.awt.Image;
 import java.io.File;
-import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Libro extends java.util.Observable implements Comparable<Libro>, java.io.Serializable   {
     private String isbn;
